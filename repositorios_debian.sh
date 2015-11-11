@@ -25,7 +25,15 @@ TRUE Estable TRUE Testing FALSE Sid FALSE Lxqt TRUE Liquorix TRUE Sparky FALSE M
 --print-all| sed -r 's/([A-Z]+\|[[:alpha:]]+)\|([A-Z]+\|[[:alpha:]]+)\|/\1\n\2/' | grep TRUE | cut -f2 -d\|`
 
 #Desactiva otros repositorios
-sudo sed -i 's/deb /#deb /g' /etc/apt/sources.list.d/*.list
+#sudo sed -i 's/deb /#deb /g' /etc/apt/sources.list.d/*.list
+for i in $(find /etc/apt/ -iname "*.list" -type f); do
+awk '{print "#"$0}' ${i}|sudo tee ${i}
+done
+
+#Se puede borrar los listados descargados
+#sudo find /var/cache/apt/ -type f -exec rm -v {} \;
+#sudo find /var/lib/apt/lists/ -type f -exec rm -v {} \;
+
 
 #Elimina listados antiguos
 #~ sudo find /var/lib/apt/lists/ -type f -exec rm -v {} \;
