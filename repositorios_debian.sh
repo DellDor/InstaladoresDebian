@@ -322,11 +322,11 @@ fi
 
 if $(yad --center --image "dialog-question" --title "Actualizaciones de seguridad" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones de seguridad?"); then
 LANG=C
-x-terminal-emulator -e sudo aptitude install --visual-preview $(apt-get upgrade -s | grep -i security| awk '/^Inst/ { print $2 }')
+x-terminal-emulator -maximized -e sudo aptitude install --visual-preview $(apt-get upgrade -s | grep -i security| awk '/^Inst/ { print $2 }')
 fi
 
 if $(yad --center --image "dialog-question" --title "Actualizaciones seguras" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones seguras, sin borrar nada?"); then
-x-terminal-emulator -e  sudo aptitude safe-upgrade --visual-preview
+x-terminal-emulator -maximized -e  sudo aptitude safe-upgrade --visual-preview
 fi
 
 if $(yad --center --image "dialog-question" --title "Actualizaciones sin descargas" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar lo que ya esté en la caché?"); then
@@ -335,5 +335,5 @@ fi
 
 
 if $(yad --center --image "dialog-question" --title "Actualizaciones una a una" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar uno a uno los paquetes faltantes?"); then
-x-terminal-emulator -e aptitude search ~U -F %p|xargs -i sudo apt-get install -q "{}"
+x-terminal-emulator -maximized -e aptitude search ~U -F %p|xargs -i sudo apt-get install -q "{}"
 fi
