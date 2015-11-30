@@ -21,7 +21,23 @@
 #~ Pin-Priority: 400
 
 elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
-TRUE Estable TRUE Testing FALSE Sid FALSE Lxqt TRUE Liquorix TRUE Sparky FALSE Multimedia TRUE Iceweasel TRUE LMDE FALSE Cantv FALSE Cantv2 FALSE Velug FALSE "Cairo Dock" \
+TRUE Estable \
+TRUE Testing \
+FALSE Sid \
+FALSE Lxqt \
+TRUE Liquorix \
+TRUE Sparky \
+FALSE Multimedia \
+TRUE Iceweasel \
+TRUE LMDE \
+FALSE Cantv \
+FALSE Cantv2 \
+FALSE Velug \
+FALSE Virtualbox \
+FALSE Google \
+FALSE Opera
+FALSE "Cairo Dock" \
+FALSE PlayOnLinux \
 --print-all| sed -r 's/([A-Z]+\|[[:alpha:]]+)\|([A-Z]+\|[[:alpha:]]+)\|/\1\n\2/' | grep TRUE | cut -f2 -d\|`
 
 #Desactiva otros repositorios
@@ -207,7 +223,6 @@ Pin-Priority: 1001
 fi
 
 if [[ $elegidos == *Liquorix* ]]; then
-echo ""
 echo "deb http://liquorix.net/debian sid main past future"|sudo tee /etc/apt/sources.list.d/liquorix.list
 
 echo "Package: linux-*                    
@@ -222,6 +237,7 @@ echo "####Multimedia
 deb http://www.deb-multimedia.org stable main non-free
 deb http://www.deb-multimedia.org stable-backports main #non-free
 deb http://www.deb-multimedia.org testing main non-free
+deb http://www.deb-multimedia.org oldstable main non-free
 deb http://www.deb-multimedia.org sid main non-free" |sudo tee /etc/apt/sources.list.d/multimedia.list
 cd /var/cache/apt/archives
 sudo wget -c http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2015.6.1_all.deb
@@ -248,7 +264,7 @@ fi
 if [[ $elegidos == *Sparky* ]]; then
 echo "sparkylinux.org/repo/"
 echo "deb http://sparkylinux.org/repo testing main
-# deb http://sparkylinux.org/repo unstable main"|sudo tee /etc/apt/sources.list.d/sparky.list
+#deb http://sparkylinux.org/repo unstable main"|sudo tee /etc/apt/sources.list.d/sparky.list
 cd /tmp
 wget -O - http://sparkylinux.org/repo/sparkylinux.gpg.key | sudo apt-key add -
 
@@ -258,27 +274,60 @@ Pin-Priority: 1001
 " | sudo tee /etc/apt/preferences.d/sparky-pin
 fi
 
+if [[ $elegidos == *Virtualbox* ]]; then
+echo "Virtualbox"
+echo "deb http://download.virtualbox.org/virtualbox/debian jessie contrib non-free"|sudo tee /etc/apt/sources.list.d/virtualbox.list
+fi
+
+
+if [[ $elegidos == *PlayOnLinux* ]]; then
+echo "Play on Linux"
+echo "deb http://deb.playonlinux.com/ wheezy main"|sudo tee /etc/apt/sources.list.d/playonlinux.list
+fi
+
+if [[ $elegidos == *Google* ]]; then
+echo "## Google-chrome web browser
+deb http://dl.google.com/linux/chrome/deb/ stable main
+
+## Google Earth
+#deb http://dl.google.com/linux/earth/deb/ stable main
+
+## Google talk plugin
+#deb http://dl.google.com/linux/talkplugin/deb/ stable main
+
+## Google music manager
+#deb http://dl.google.com/linux/musicmanager/deb/ stable main"|sudo tee /etc/apt/sources.list.d/google.list
+fi
+
+if [[ $elegidos == *Opera* ]]; then
+echo ""
+echo "## Opera web browser
+deb http://deb.opera.com/opera/ stable non-free
+deb http://deb.opera.com/opera/ testing non-free
+deb http://deb.opera.com/opera/ unstable non-free"|sudo tee /etc/apt/sources.list.d/opera.list
+fi
+
+
 if [[ $elegidos == ** ]]; then
 echo ""
 # echo ""|sudo tee /etc/apt/sources.list.d/.list
 fi
 
+################
 echo 'Acquire::Check-Valid-Until "false";' | sudo tee /etc/apt/apt.conf.d/80update-caduco
 
 if $(yad --center --image "dialog-question" --title "Listado de repositorios" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar listado de repositorios?"); then
 x-terminal-emulator -e sudo apt-get update
 fi
 
-
 if $(yad --center --image "dialog-question" --title "Actualizaciones de seguridad" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones de seguridad?"); then
+LANG=C
 x-terminal-emulator -e sudo aptitude install --visual-preview $(apt-get upgrade -s | grep -i security| awk '/^Inst/ { print $2 }')
 fi
-
 
 if $(yad --center --image "dialog-question" --title "Actualizaciones seguras" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones seguras, sin borrar nada?"); then
 x-terminal-emulator -e  sudo aptitude safe-upgrade --visual-preview
 fi
-
 
 if $(yad --center --image "dialog-question" --title "Actualizaciones sin descargas" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar lo que ya esté en la caché?"); then
 x-terminal-emulator -e sudo bash -c "apt-get upgrade -s |grep 'Inst '| cut -d' ' -f2| grep -v -e ^lib[a-q] -e ^lib[s-z] -e ^libr[a-d] -e ^libr[f-z] -e ^libre[a-n] -e ^libre[p-z]|xargs -l1 apt-get install --no-download --no-remove"
