@@ -5,6 +5,14 @@
 #~ Añade los respectivos pins al ir seleccionando los reopositorios.
 
 #~ TODO: Solo descargar las claves si no están presentes. Paras los tipo paquetes, puede hacerse revisando la versión instalada o como en goo docs sobre pychemp-qt . Proceder solo si es distinta a la requerida.
+#~ TODO: Definir procedimiento que se repite con llamada desde cada uno de los if.
+
+descargar_repos_debian() {
+cd /var/tmp
+wget -c https://github.com/DellDor/InstaladoresDebian/raw/master/repositorios_debian.sh
+chmod a+x repositorios_debian.sh 
+bash repositorios_debian.sh
+}
 
 #~ Package: *
 #~ Pin: release a=stable
