@@ -305,6 +305,7 @@ deb http://dl.google.com/linux/chrome/deb/ stable main
 ##Google remote Desktop
 #deb http://dl.google.com/linux/chrome-remote-desktop/deb/ stable main
 "|sudo tee /etc/apt/sources.list.d/google.list
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A040830F7FAC5991
 fi
 
 if [[ $elegidos == *Opera* ]]; then
