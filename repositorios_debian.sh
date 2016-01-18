@@ -6,6 +6,7 @@
 
 #~ TODO: Solo descargar las claves si no están presentes. Paras los tipo paquetes, puede hacerse revisando la versión instalada o como en goo docs sobre pychemp-qt . Proceder solo si es distinta a la requerida.
 #~ TODO: Definir procedimiento que se repite con llamada desde cada uno de los if.
+#TODO: Si no está presente, instalar yad desde http://sparkylinux.org/repo/pool/main/y/yad/ según la arquitectura.
 
 descargar_repos_debian() {
 cd /var/tmp
