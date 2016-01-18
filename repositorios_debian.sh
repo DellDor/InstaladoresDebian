@@ -230,7 +230,7 @@ if [[ $elegidos == *Liquorix* ]]; then
 echo "deb http://liquorix.net/debian sid main past future"|sudo tee /etc/apt/sources.list.d/liquorix.list
 
 echo "Package: linux-*                    
-Pin: release o=linuxmint
+Pin: release o=liquorix
 Pin-Priority: 1001
 " | sudo tee /etc/apt/preferences.d/liquorix-pin
 fi
@@ -257,7 +257,7 @@ sudo wget -c http://mozilla.debian.net/pkg-mozilla-archive-keyring_1.1_all.deb &
 fi
 
 if [[ $elegidos == *LMDE* ]]; then
-echo "LMDE Betsy http://community.linuxmint.com/tutorial/view/2013"
+echo "LMDE Betsy http://community.linuxmint.com/tutorial/view/201"
 echo "deb http://packages.linuxmint.com betsy main upstream import #backport
 deb http://extra.linuxmint.com betsy main #upstream import backport"|sudo tee /etc/apt/sources.list.d/betsy.list
 #~ TODO: añadir clave de LMDE
@@ -299,7 +299,11 @@ deb http://dl.google.com/linux/chrome/deb/ stable main
 #deb http://dl.google.com/linux/talkplugin/deb/ stable main
 
 ## Google music manager
-#deb http://dl.google.com/linux/musicmanager/deb/ stable main"|sudo tee /etc/apt/sources.list.d/google.list
+#deb http://dl.google.com/linux/musicmanager/deb/ stable main
+
+##Google remote Desktop
+#deb http://dl.google.com/linux/chrome-remote-desktop/deb/ stable main
+"|sudo tee /etc/apt/sources.list.d/google.list
 fi
 
 if [[ $elegidos == *Opera* ]]; then
