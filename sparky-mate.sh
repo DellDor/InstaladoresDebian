@@ -3,6 +3,7 @@
 #Inicia la creación de metapaquete de Sparky Mate.
 #31 enero 2016
 
+cd `mktemp -d`
 export servidor="http://sourceforge.net/projects/sparkylinux/files"
 export sector="mate" 
 export version="4.2-i586"
