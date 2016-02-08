@@ -42,7 +42,8 @@ FALSE Cantv2 \
 FALSE Velug \
 FALSE Virtualbox \
 FALSE Google \
-FALSE Opera
+FALSE Opera \
+FALSE JOSM \
 FALSE "Cairo Dock" \
 FALSE PlayOnLinux \
 --print-all| sed -r 's/([A-Z]+\|[[:alpha:]]+)\|([A-Z]+\|[[:alpha:]]+)\|/\1\n\2/' | grep TRUE | cut -f2 -d\|`
@@ -234,6 +235,12 @@ echo "Package: linux-*
 Pin: release o=liquorix
 Pin-Priority: 1001
 " | sudo tee /etc/apt/preferences.d/liquorix-pin
+fi
+
+if [[ $elegidos == *JOSM* ]]; then
+echo "deb https://josm.openstreetmap.de/apt alldist universe"|sudo tee /etc/apt/sources.list.d/josm.list
+cd /tmp
+wget -c https://josm.openstreetmap.de/josm-apt.key -O- | sudo apt-key add -
 fi
 
 if [[ $elegidos == *Multimedia* ]]; then
