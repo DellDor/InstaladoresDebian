@@ -4,7 +4,7 @@
 #~ Poco a poco se deberá ir pasndo todos los comandos alguna forma de ejecución en yad y mostrar la terminal solo cuando corresponda
 #~ Añade los respectivos pins al ir seleccionando los reopositorios.
 
-#~ TODO: Solo descargar las claves si no están presentes. Paras los tipo paquetes, puede hacerse revisando la versión instalada o como en goo docs sobre pychemp-qt . Proceder solo si es distinta a la requerida.
+#~ TODO: Probar y copiar esquema de prueba de claves presentes de Opera. Paras los tipo paquetes, puede hacerse revisando la versión instalada o como en goo docs sobre pychemp-qt . Proceder solo si es distinta a la requerida.
 #~ TODO: Definir procedimiento que se repite con llamada desde cada uno de los if.
 #TODO: Si no está presente, instalar yad desde http://sparkylinux.org/repo/pool/main/y/yad/ según la arquitectura.
 
@@ -316,11 +316,15 @@ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A040830F7FAC5991
 fi
 
 if [[ $elegidos == *Opera* ]]; then
-echo ""
 echo "## Opera web browser
 deb http://deb.opera.com/opera/ stable non-free
 deb http://deb.opera.com/opera/ testing non-free
 deb http://deb.opera.com/opera/ unstable non-free"|sudo tee /etc/apt/sources.list.d/opera.list
+if sudo gpg --list-public-keys | grep 4096R/A8492E35 > /dev/null; then
+:
+else
+wget -O- https://deb.opera.com/archive.key | sudo apt-key add -
+fi
 fi
 
 if [[ $elegidos == ** ]]; then
