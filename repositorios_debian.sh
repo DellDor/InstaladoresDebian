@@ -8,14 +8,7 @@
 #~ TODO: Definir procedimiento que se repite con llamada desde cada uno de los if.
 #TODO: Si no está presente, instalar yad desde http://sparkylinux.org/repo/pool/main/y/yad/ según la arquitectura.
 
-descargar_repos_debian() {
-inicial="${PWD##}"
-cd /var/tmp
-wget -c https://github.com/DellDor/InstaladoresDebian/raw/master/repositorios_debian.sh
-chmod a+x repositorios_debian.sh 
-bash repositorios_debian.sh
-cd $inicial
-}
+#Guión de descarga movido a https://github.com/DellDor/aliasbash/.bash_aliases_debian.sh
 
 #~ Package: *
 #~ Pin: release a=stable
