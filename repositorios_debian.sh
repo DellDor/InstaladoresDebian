@@ -9,10 +9,12 @@
 #TODO: Si no está presente, instalar yad desde http://sparkylinux.org/repo/pool/main/y/yad/ según la arquitectura.
 
 descargar_repos_debian() {
+inicial="${PWD##}"
 cd /var/tmp
 wget -c https://github.com/DellDor/InstaladoresDebian/raw/master/repositorios_debian.sh
 chmod a+x repositorios_debian.sh 
 bash repositorios_debian.sh
+cd $inicial
 }
 
 #~ Package: *
@@ -33,7 +35,7 @@ TRUE Testing \
 FALSE Sid \
 FALSE Lxqt \
 TRUE Liquorix \
-TRUE Sparky \
+TRUE "Sparky & Siduction" \
 FALSE Multimedia \
 TRUE Iceweasel \
 TRUE LMDE \
@@ -274,9 +276,16 @@ sudo wget -c http://packages.linuxmint.com/pool/main/l/linuxmint-keyring/linuxmi
 fi
 
 if [[ $elegidos == *Sparky* ]]; then
-echo "sparkylinux.org/repo/"
+echo "sparkylinux.org/repo/
+http://forum.siduction.org/index.php?page=download-mirrors-en"
 echo "deb http://sparkylinux.org/repo testing main
-#deb http://sparkylinux.org/repo unstable main"|sudo tee /etc/apt/sources.list.d/sparky.list
+#deb http://sparkylinux.org/repo unstable main
+
+deb     http://www.las.ic.unicamp.br/pub/siduction/extra unstable main
+#deb-src http://www.las.ic.unicamp.br/pub/siduction/extra unstable main
+deb     http://www.las.ic.unicamp.br/pub/siduction/fixes unstable main contrib non-free
+#deb-src http://www.las.ic.unicamp.br/pub/siduction/fixes unstable main contrib non-free
+"|sudo tee /etc/apt/sources.list.d/sparky.list
 cd /tmp
 wget -O - http://sparkylinux.org/repo/sparkylinux.gpg.key | sudo apt-key add -
 
