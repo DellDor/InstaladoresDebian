@@ -28,7 +28,7 @@ TRUE Testing \
 FALSE Sid \
 FALSE Lxqt \
 TRUE Liquorix \
-TRUE "Sparky & Siduction" \
+TRUE "Sparky y Siduction" \
 FALSE Multimedia \
 TRUE Iceweasel \
 TRUE LMDE \
