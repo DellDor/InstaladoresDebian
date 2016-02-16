@@ -21,12 +21,13 @@ sudo aptitude install --visual-preview -t jessie-backports libreoffice-{l10n,hel
 
 #Manual, por si hay problemas de versión
 #Para Mate, lo que incluye Gtk, Gnome. Si es para lxqt, revisar si incluir KDE.
-v1="5.0.1-2~bpo8+1"
+#Proximo: 5.1.0~rc3-1
+v1="5.0.5~rc1-1"
 v2="1:$v1"
 
-#sudo apt-get install libreoffice-{writer,java-common,base,l10n-es,calc,base-drivers,base-core,gnome,gtk,draw,impress,math,common,help-es,core}=$v2 python3-uno=$v2 ure=$v1 myspell-es
+sudo apt-get install libreoffice-{writer,java-common,base,l10n-es,calc,base-drivers,base-core,gnome,gtk,draw,impress,math,common,help-es,core}=$v2 python3-uno=$v2 ure=$v1 myspell-es
 
 #Marcamos como automáticos:
 #sudo apt-mark auto \
-sudo aptitude markauto --visual-preview \
+sudo aptitude markauto \ #--visual-preview \
 libreoffice-{help-es,base,base-drivers,base-core,common,calc,core,draw,impress,java-common,math,writer,gtk,style-galaxy,style-tango} ure python3-uno
