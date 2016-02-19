@@ -1,6 +1,8 @@
 #!/bin/bash
 #Todo: Identificar si está instalado el paquete
 
+#http://www.skeed.it/songpress
+
 sudo apt-get install python-wxtools
 cd /var/tmp
 wget -c https://github.com/lallulli/songpress/archive/master.zip
