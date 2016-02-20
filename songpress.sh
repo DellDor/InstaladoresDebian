@@ -12,7 +12,7 @@ wget -P/var/tmp -c https://github.com/lallulli/songpress/archive/master.zip
 unzip /var/tmp/master.zip
 sudo sh -c "mkdir -p /opt/songpress
 cp -vur /var/tmp/songpress-master/src/* /opt/songpress
-chmod a+x /opt/songpress/main"
+chmod a+x /opt/songpress/main.py"
 
 #Crea acceso en escritorio
 #TODO: Generar y crear entrada en menú de aplicaciones
