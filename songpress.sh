@@ -1,17 +1,32 @@
 #!/bin/bash
-# Manejador de letras con acordes en formato chrodpro
+#Instalador con packagekit de manejador de letras con acordes en formato chrodpro
 #http://www.skeed.it/songpress
 
-#ToDo: Identificar si está instalado el paquete
-
-if ! dpkg-query -l python-wxtools > /dev/null; then
+#if ! dpkg-query -l python-wxtools > /dev/null; then
+if ! LANGUAGE=C pkcon search name python-wxtools| grep Installed > /dev/null; then
 echo "Instalando paquete requerido"
-sudo apt-get install python-wxtools
+pkcon install python-wxtools
 fi
 
 wget -P/var/tmp -c https://github.com/lallulli/songpress/archive/master.zip
 unzip /var/tmp/master.zip
-sudo mkdir -p /opt/songpress
-sudo mv -v /var/tmp/songpress-master/src/* /opt/songpress
-cd /opt/songpress
-python main.py
+sudo sh -c "mkdir -p /opt/songpress
+mv -v /var/tmp/songpress-master/src/* /opt/songpress
+chmod a+x /opt/songpress/main"
+
+cat <<EOD >$(xdg-user-dir DESKTOP)/songpress.desktop 
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Name=Songpress
+Comment=Lyrics with chords editor
+Comment[es]=Editor de letras con acordes
+Path=/opt/songpress
+Exec=python main.py
+Type=Application
+Terminal=true
+Icon=/opt/songpress/img/songpress.png
+Categories=Utility;Application
+EOD
+
+chmod a+x $(xdg-user-dir DESKTOP)/songpress.desktop
