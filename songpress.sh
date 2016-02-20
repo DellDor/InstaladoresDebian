@@ -24,9 +24,9 @@ Comment[es]=Editor de letras con acordes
 Path=/opt/songpress
 Exec=python main.py
 Type=Application
-Terminal=true
+Terminal=false
 Icon=/opt/songpress/img/songpress.png
-Categories=Utility;Application
+Categories=Utility;Application;
 EOD
 
 chmod a+x $(xdg-user-dir DESKTOP)/songpress.desktop
