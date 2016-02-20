@@ -11,9 +11,11 @@ fi
 wget -P/var/tmp -c https://github.com/lallulli/songpress/archive/master.zip
 unzip /var/tmp/master.zip
 sudo sh -c "mkdir -p /opt/songpress
-mv -v /var/tmp/songpress-master/src/* /opt/songpress
+cp -vur /var/tmp/songpress-master/src/* /opt/songpress
 chmod a+x /opt/songpress/main"
 
+#Crea acceso en escritorio
+#TODO: Generar y crear entrada en menú de aplicaciones
 cat <<EOD >$(xdg-user-dir DESKTOP)/songpress.desktop 
 #!/usr/bin/env xdg-open
 [Desktop Entry]
