@@ -11,6 +11,7 @@ cosa="pkcon"
 cosa="aptitude --visual-preview"
 
 sudo $cosa install flightgear fgrun
+sudo chmod a+rw -R $HOME/.fgfs
 }
 
 instala
