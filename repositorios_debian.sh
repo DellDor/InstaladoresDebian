@@ -18,7 +18,7 @@ FALSE Sid \
 FALSE Lxqt \
 TRUE Liquorix \
 TRUE "Sparky y Siduction" \
-TRUE Multimedia \
+FALSE Multimedia \
 TRUE Iceweasel \
 TRUE LMDE \
 FALSE Cantv \
@@ -211,8 +211,9 @@ deb http://packages.siduction.org/lxqt unstable main
 
 deb http://packages.siduction.org/lxqt experimental main
 #deb-src http://packages.siduction.org/lxqt experimental main"|sudo tee /etc/apt/sources.list.d/lxqt.list
+if ! sudo gpg --list-public-keys | grep 4096R/45C45076 > /dev/null; then
 sudo apt-key adv --keyserver pgpkeys.mit.edu --recv-key 15CBD88045C45076
-
+fi
 echo "Package: *                    
 Pin: release o=lxqt
 Pin-Priority: 1001
@@ -274,6 +275,10 @@ deb http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-fre
 #deb-src http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free"|sudo tee /etc/apt/sources.list.d/sparky.list
 wget -O - http://sparkylinux.org/repo/sparkylinux.gpg.key | sudo apt-key add -
 
+if ! sudo gpg --list-public-keys | grep 4096R/45C45076 > /dev/null; then
+sudo apt-key adv --keyserver pgpkeys.mit.edu --recv-key 15CBD88045C45076
+fi
+
 echo "Package: *                    
 Pin: release o=SparkyLinux
 Pin-Priority: 1001
@@ -286,8 +291,11 @@ echo "deb http://download.virtualbox.org/virtualbox/debian jessie contrib non-fr
 fi
 
 if [[ $elegidos == *PlayOnLinux* ]]; then
-echo "Play on Linux"
-echo "deb http://deb.playonlinux.com/ wheezy main"|sudo tee /etc/apt/sources.list.d/playonlinux.list
+echo "https://www.playonlinux.com/en/download.html"
+sudo wget http://deb.playonlinux.com/playonlinux_wheezy.list -O /etc/apt/sources.list.d/playonlinux.list
+if ! sudo gpg --list-public-keys | grep 1024D/C4676186 > /dev/null; then
+wget "http://deb.playonlinux.com/public.gpg" -O- | sudo apt-key add -
+fi
 fi
 
 if [[ $elegidos == *Google* ]]; then
@@ -314,9 +322,7 @@ echo "## Opera web browser
 deb http://deb.opera.com/opera/ stable non-free
 deb http://deb.opera.com/opera/ testing non-free
 deb http://deb.opera.com/opera/ unstable non-free"|sudo tee /etc/apt/sources.list.d/opera.list
-if sudo gpg --list-public-keys | grep 4096R/A8492E35 > /dev/null; then
-:
-else
+if ! sudo gpg --list-public-keys | grep 4096R/A8492E35 > /dev/null; then
 wget -O- https://deb.opera.com/archive.key | sudo apt-key add -
 fi
 fi
