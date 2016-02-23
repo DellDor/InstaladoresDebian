@@ -18,7 +18,7 @@ FALSE Sid \
 FALSE Lxqt \
 TRUE Liquorix \
 TRUE "Sparky y Siduction" \
-FALSE Multimedia \
+TRUE Multimedia \
 TRUE Iceweasel \
 TRUE LMDE \
 FALSE Cantv \
