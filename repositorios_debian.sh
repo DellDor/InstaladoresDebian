@@ -57,7 +57,8 @@ done
 #Elimina listados antiguos
 #~ sudo find /var/lib/apt/lists/ -type f -exec rm -v {} \;
 
-if [[ $elegidos == *Estable* ]]; then
+#if [[ $elegidos == *Estable* ]]; then
+if echo $elegidos|grep -w "Estable" > /dev/null; then
 echo "httpredir.debian.org wiki.debian.org/StableUpdates"
 echo "deb http://httpredir.debian.org/debian jessie-proposed-updates main contrib non-free
 
@@ -96,8 +97,9 @@ Pin-Priority: 650
 " | sudo tee /etc/apt/preferences.d/stable-pin
 fi
 
-if [[ $elegidos == *Testing* ]]; then
- echo "httpredir.debian.org"
+#if [[ $elegidos == *Testing* ]]; then
+if echo $elegidos|grep -w "Testing" > /dev/null; then
+echo "httpredir.debian.org"
 echo "deb http://httpredir.debian.org/debian testing main contrib non-free
 #deb-src http://httpredir.debian.org/debian testing main contrib non-free
 
@@ -117,8 +119,9 @@ Pin-Priority: 740
 "| sudo tee /etc/apt/preferences.d/testing-pin
 fi
 
-if [[ $elegidos == *Sid* ]]; then
- echo "httpredir.debian.org"
+#if [[ $elegidos == *Sid* ]]; then
+if echo $elegidos|grep -w "Sid" > /dev/null; then
+echo "httpredir.debian.org"
 echo "deb http://httpredir.debian.org/debian sid main contrib non-free
 #deb-src http://httpredir.debian.org/debian sid main contrib non-free
 
@@ -139,9 +142,10 @@ Pin-Priority: 150
 " | sudo tee /etc/apt/preferences.d/sid-pin
 fi
 
-if [[ $elegidos == *Cantv* ]]; then
- echo "debian.cantv.net"
- echo "####Stable
+#if [[ $elegidos == *Cantv* ]]; then
+if echo $elegidos|grep -w "Cantv" > /dev/null; then
+echo "debian.cantv.net"
+echo "####Stable
 deb http://debian.cantv.net/debian stable main contrib non-free
 deb http://debian.cantv.net/debian stable-updates main contrib non-free
 #deb http://debian.cantv.net/debian stable-proposed-updates main contrib non-free
@@ -157,8 +161,9 @@ deb http://debian.cantv.net/debian testing-proposed-updates main contrib non-fre
 #deb http://debian.cantv.net/debian/debian-security/ testing/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/cantv.list
 fi
 
-if [[ $elegidos == *Cantv2* ]]; then
- echo "mirror-01.cantv.net"
+#if [[ $elegidos == *Cantv2* ]]; then
+if echo $elegidos|grep -w "Cantv2" > /dev/null; then
+echo "mirror-01.cantv.net"
 echo "####Stable
 deb http://mirror-01.cantv.net/debian stable main contrib non-free
 deb http://mirror-01.cantv.net/debian stable-updates main contrib non-free
@@ -174,10 +179,11 @@ deb http://mirror-01.cantv.net/debian testing-proposed-updates main contrib non-
 #deb http://mirror-01.cantv.net/debian/debian-security/ stable/updates main contrib non-free
 #deb http://mirror-01.cantv.net/debian/debian-security/ testing/updates main contrib non-free
 "|sudo tee /etc/apt/sources.list.d/cantv2.list
- fi
+fi
  
-if [[ $elegidos == *Velug* ]]; then
- echo "debian.velug.org.ve"
+#if [[ $elegidos == *Velug* ]]; then
+if echo $elegidos|grep -w "Velug" > /dev/null; then
+echo "debian.velug.org.ve"
 echo "####Stable
 deb http://debian.velug.org.ve/debian stable main contrib non-free
 deb http://debian.velug.org.ve/debian stable-updates main contrib non-free
@@ -195,13 +201,15 @@ deb http://debian.velug.org.ve/debian testing-proposed-updates main contrib non-
 "|sudo tee /etc/apt/sources.list.d/velug.list
 fi
 
-if [[ $elegidos == *Cairo* ]]; then
+#if [[ $elegidos == *Cairo* ]]; then
+if echo $elegidos|grep -w "Cairo" > /dev/null; then
 echo "tuxfamily.org/glxdock"
 echo "deb http://download.tuxfamily.org/glxdock/repository/debian testing cairo-dock
 "|sudo tee /etc/apt/sources.list.d/cairo-dock.list
 fi
 
-if [[ $elegidos == *Lxqt* ]]; then
+#if [[ $elegidos == *Lxqt* ]]; then
+if echo $elegidos|grep -w "Lxqt" > /dev/null; then
 echo "Siduction"
 echo "deb http://packages.siduction.org/lxqt jessie-backports main
 #deb-src http://packages.siduction.org/lxqt jessie-backports main
