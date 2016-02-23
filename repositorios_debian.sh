@@ -342,21 +342,17 @@ echo 'Acquire::Check-Valid-Until "false";' | sudo tee /etc/apt/apt.conf.d/80upda
 
 if $(yad --center --image "dialog-question" --title "Listado de repositorios" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar listado de repositorios?"); then
 x-terminal-emulator -e sudo apt-get update
-fi
-
+fi && \ 
 if $(yad --center --image "dialog-question" --title "Actualizaciones de seguridad" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones de seguridad?"); then
 LANG=C
 x-terminal-emulator -e  sudo aptitude install --visual-preview $(apt-get upgrade -s | grep -i security| awk '/^Inst/ { print $2 }')
-fi
-
+fi && \
 if $(yad --center --image "dialog-question" --title "Actualizaciones seguras" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones seguras, sin borrar nada?"); then
 x-terminal-emulator -e sudo aptitude safe-upgrade --visual-preview
-fi
-
+fi && \
 if $(yad --center --image "dialog-question" --title "Actualizaciones sin descargas" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar lo que ya esté en la caché?"); then
 x-terminal-emulator -e sudo bash -c "apt-get upgrade -s |grep 'Inst '| cut -d' ' -f2| grep -v -e ^lib[a-q] -e ^lib[s-z] -e ^libr[a-d] -e ^libr[f-z] -e ^libre[a-n] -e ^libre[p-z]|xargs -l1 apt-get install --no-download --no-remove"
-fi
-
+fi && \
 if $(yad --center --image "dialog-question" --title "Actualizaciones una a una" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar uno a uno los paquetes faltantes?"); then
 xterm -maximized -e aptitude search ~U -F %p|xargs -i sudo apt-get install -q "{}"
 fi
