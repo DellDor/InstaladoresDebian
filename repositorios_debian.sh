@@ -1,26 +1,15 @@
 #!/bin/bash
-#~ Añade repositorios y actualiza el sistema, empleando yad como interfaz
-#~ La intención es que sólo se emplee esa interfaz
-#~ Poco a poco se deberá ir pasndo todos los comandos alguna forma de ejecución en yad y mostrar la terminal solo cuando corresponda
-#~ Añade los respectivos pins al ir seleccionando los reopositorios.
+#Añade repositorios y actualiza el sistema, empleando yad como interfaz para las preguntas
+#Por ahora debe ejecutarse desde una terminal, pues no crea nuevas.
+#La intención es que sólo se emplee esa interfaz
+#Poco a poco se deberá ir pasndo todos los comandos alguna forma de ejecución en yad y mostrar la terminal solo cuando corresponda
+#Añade los respectivos pins al ir seleccionando los reopositorios.
 
-#~ TODO: Probar y copiar esquema de prueba de claves presentes de Opera. Paras los tipo paquetes, puede hacerse revisando la versión instalada o como en goo docs sobre pychemp-qt . Proceder solo si es distinta a la requerida.
-#~ TODO: Definir procedimiento que se repite con llamada desde cada uno de los if.
-#TODO: Si no está presente, instalar yad desde http://sparkylinux.org/repo/pool/main/y/yad/ según la arquitectura.
+#HACER: Probar y copiar esquema de prueba de claves presentes de Opera. Paras los tipo paquetes, puede hacerse revisando la versión instalada o como en goo docs sobre pychemp-qt . Proceder solo si es distinta a la requerida.
+#HACER: Definir procedimiento que se repite con llamada desde cada uno de los if.
+#HACER: Si no está presente, instalar yad desde http://sparkylinux.org/repo/pool/main/y/yad/ según la arquitectura.
 
 #Guión de descarga movido a https://github.com/DellDor/aliasbash/.bash_aliases_debian.sh
-
-#~ Package: *
-#~ Pin: release a=stable
-#~ Pin-Priority: 700
-
-#~ Package: *
-#~ Pin: release a=testing
-#~ Pin-Priority: 650
-
-#~ Package: *
-#~ Pin: release o=*, a=unstable
-#~ Pin-Priority: 400
 
 elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
 TRUE Estable \
@@ -43,11 +32,11 @@ FALSE "Cairo Dock" \
 FALSE PlayOnLinux \
 --print-all| sed -r 's/([A-Z]+\|[[:alpha:]]+)\|([A-Z]+\|[[:alpha:]]+)\|/\1\n\2/' | grep TRUE | cut -f2 -d\|`
 
-#Desactiva otros repositorios
-#sudo sed -i 's/deb /#deb /g' /etc/apt/sources.list.d/*.list
-for i in $(find /etc/apt/ -iname "*.list" -type f); do
-awk '{print "#"$0}' ${i}|sudo tee ${i}
-done
+#~ #Desactiva otros repositorios
+#~ #sudo sed -i 's/deb /#deb /g' /etc/apt/sources.list.d/*.list
+#~ for i in $(find /etc/apt/ -iname "*.list" -type f); do
+#~ awk '{print "#"$0}' ${i}|sudo tee ${i}
+#~ done
 
 #Se puede borrar los listados descargados
 #sudo find /var/cache/apt/ -type f -exec rm -v {} \;
@@ -55,7 +44,7 @@ done
 
 
 #Elimina listados antiguos
-#~ sudo find /var/lib/apt/lists/ -type f -exec rm -v {} \;
+#sudo find /var/lib/apt/lists/ -type f -exec rm -v {} \;
 
 #if [[ $elegidos == *Estable* ]]; then
 if echo $elegidos|grep -w "Estable" > /dev/null; then
@@ -268,7 +257,7 @@ if [[ $elegidos == *LMDE* ]]; then
 echo "LMDE Betsy http://community.linuxmint.com/tutorial/view/201"
 echo "deb http://packages.linuxmint.com betsy main upstream import #backport
 deb http://extra.linuxmint.com betsy main #upstream import backport"|sudo tee /etc/apt/sources.list.d/betsy.list
-#~ TODO: añadir clave de LMDE
+#HACER: añadir clave de LMDE
 sudo wget -Nc -P /var/cache/apt/archives http://packages.linuxmint.com/pool/main/l/linuxmint-keyring/linuxmint-keyring_2009.04.29_all.deb && \
 sudo dpkg -i /var/cache/apt/archives/linuxmint-keyring_2009.04.29_all.deb
 fi
@@ -332,26 +321,26 @@ wget -O- https://deb.opera.com/archive.key | sudo apt-key add -
 fi
 fi
 
-if [[ $elegidos == ** ]]; then
-echo ""
-# echo ""|sudo tee /etc/apt/sources.list.d/.list
-fi
 ################
 echo 'Acquire::Check-Valid-Until "false";' | sudo tee /etc/apt/apt.conf.d/80update-caduco
 
 if $(yad --center --image "dialog-question" --title "Listado de repositorios" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar listado de repositorios?"); then
-x-terminal-emulator -e sudo apt-get update
-fi && \
+sudo apt-get update
+#~ x-terminal-emulator -e 
+fi
 if $(yad --center --image "dialog-question" --title "Actualizaciones de seguridad" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones de seguridad?"); then
-LANG=C
-x-terminal-emulator -e  sudo aptitude install --visual-preview $(apt-get upgrade -s | grep -i security| awk '/^Inst/ { print $2 }')
-fi && \
+#~ x-terminal-emulator -e  
+LANG=C sudo aptitude install --visual-preview $(apt-get upgrade -s | grep -i security| awk '/^Inst/ { print $2 }')
+fi
 if $(yad --center --image "dialog-question" --title "Actualizaciones seguras" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones seguras, sin borrar nada?"); then
-x-terminal-emulator -e sudo aptitude safe-upgrade --visual-preview
-fi && \
+#~ x-terminal-emulator -e 
+sudo aptitude safe-upgrade --visual-preview
+fi
 if $(yad --center --image "dialog-question" --title "Actualizaciones sin descargas" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar lo que ya esté en la caché?"); then
-x-terminal-emulator -e sudo bash -c "apt-get upgrade -s |grep 'Inst '| cut -d' ' -f2| grep -v -e ^lib[a-q] -e ^lib[s-z] -e ^libr[a-d] -e ^libr[f-z] -e ^libre[a-n] -e ^libre[p-z]|xargs -l1 apt-get install --no-download --no-remove"
-fi && \
+#~ x-terminal-emulator -e 
+sudo bash -c "apt-get upgrade -s |grep 'Inst '| cut -d' ' -f2| grep -v -e ^lib[a-q] -e ^lib[s-z] -e ^libr[a-d] -e ^libr[f-z] -e ^libre[a-n] -e ^libre[p-z]|xargs -l1 apt-get install --no-download --no-remove"
+fi
 if $(yad --center --image "dialog-question" --title "Actualizaciones una a una" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar uno a uno los paquetes faltantes?"); then
-xterm -maximized -e aptitude search ~U -F %p|xargs -i sudo apt-get install -q "{}"
+#~ xterm -maximized -e
+aptitude search ~U -F %p|xargs -i sudo apt-get install -q "{}"
 fi
