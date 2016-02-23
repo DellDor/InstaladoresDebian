@@ -72,7 +72,7 @@ deb http://httpredir.debian.org/debian jessie-backports main contrib non-free
 
 deb http://security.debian.org/ stable/updates main contrib non-free
 #deb-src http://security.debian.org/ stable/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/stable.list
-sudo wget -Nc -P /var/cache/apt/archives http://mirror-01.cantv.net/debian/pool/main/d/debian-archive-keyring/debian-archive-keyring_2014.3_all.deb
+sudo wget -N -P /var/cache/apt/archives http://mirror-01.cantv.net/debian/pool/main/d/debian-archive-keyring/debian-archive-keyring_2014.3_all.deb && \
 sudo dpkg -i /var/cache/apt/archives/debian-archive-keyring_2014.3_all.deb
 
 echo "Package: *                    
@@ -341,20 +341,20 @@ fi
 echo 'Acquire::Check-Valid-Until "false";' | sudo tee /etc/apt/apt.conf.d/80update-caduco
 
 if $(yad --center --image "dialog-question" --title "Listado de repositorios" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar listado de repositorios?"); then
-xterm -e sudo apt-get update
+x-terminal-emulator -e sudo apt-get update
 fi
 
 if $(yad --center --image "dialog-question" --title "Actualizaciones de seguridad" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones de seguridad?"); then
 LANG=C
-xterm -maximized -e sudo aptitude install --visual-preview $(apt-get upgrade -s | grep -i security| awk '/^Inst/ { print $2 }')
+x-terminal-emulator -e  sudo aptitude install --visual-preview $(apt-get upgrade -s | grep -i security| awk '/^Inst/ { print $2 }')
 fi
 
 if $(yad --center --image "dialog-question" --title "Actualizaciones seguras" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones seguras, sin borrar nada?"); then
-xterm -maximized -e  sudo aptitude safe-upgrade --visual-preview
+x-terminal-emulator -e sudo aptitude safe-upgrade --visual-preview
 fi
 
 if $(yad --center --image "dialog-question" --title "Actualizaciones sin descargas" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar lo que ya esté en la caché?"); then
-xterm -e sudo bash -c "apt-get upgrade -s |grep 'Inst '| cut -d' ' -f2| grep -v -e ^lib[a-q] -e ^lib[s-z] -e ^libr[a-d] -e ^libr[f-z] -e ^libre[a-n] -e ^libre[p-z]|xargs -l1 apt-get install --no-download --no-remove"
+x-terminal-emulator -e sudo bash -c "apt-get upgrade -s |grep 'Inst '| cut -d' ' -f2| grep -v -e ^lib[a-q] -e ^lib[s-z] -e ^libr[a-d] -e ^libr[f-z] -e ^libre[a-n] -e ^libre[p-z]|xargs -l1 apt-get install --no-download --no-remove"
 fi
 
 if $(yad --center --image "dialog-question" --title "Actualizaciones una a una" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar uno a uno los paquetes faltantes?"); then
