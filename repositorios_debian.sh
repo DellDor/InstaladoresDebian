@@ -341,7 +341,7 @@ echo 'Acquire::Check-Valid-Until "false";' | sudo tee /etc/apt/apt.conf.d/80upda
 
 if $(yad --center --image "dialog-question" --title "Listado de repositorios" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar listado de repositorios?"); then
 x-terminal-emulator -e sudo apt-get update
-fi && \ 
+fi && \
 if $(yad --center --image "dialog-question" --title "Actualizaciones de seguridad" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones de seguridad?"); then
 LANG=C
 x-terminal-emulator -e  sudo aptitude install --visual-preview $(apt-get upgrade -s | grep -i security| awk '/^Inst/ { print $2 }')
