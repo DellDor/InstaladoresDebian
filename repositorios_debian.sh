@@ -71,9 +71,8 @@ deb http://httpredir.debian.org/debian jessie-backports main contrib non-free
 
 deb http://security.debian.org/ stable/updates main contrib non-free
 #deb-src http://security.debian.org/ stable/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/stable.list
-cd /var/cache/apt/archives
-sudo wget -c http://mirror-01.cantv.net/debian/pool/main/d/debian-archive-keyring/debian-archive-keyring_2014.3~deb7u1_all.deb
-sudo dpkg -i debian-archive-keyring_2014.3~deb7u1_all.deb
+sudo wget -Nc -P /var/cache/apt/archives http://mirror-01.cantv.net/debian/pool/main/d/debian-archive-keyring/debian-archive-keyring_2014.3_all.deb
+sudo dpkg -i /var/cache/apt/archives/debian-archive-keyring_2014.3_all.deb
 
 echo "Package: *                    
 Pin: release a=jessie-backports
@@ -234,7 +233,6 @@ fi
 
 if [[ $elegidos == *JOSM* ]]; then
 echo "deb https://josm.openstreetmap.de/apt alldist universe"|sudo tee /etc/apt/sources.list.d/josm.list
-cd /tmp
 wget -c https://josm.openstreetmap.de/josm-apt.key -O- | sudo apt-key add -
 fi
 
@@ -246,17 +244,16 @@ deb http://www.deb-multimedia.org stable-backports main #non-free
 deb http://www.deb-multimedia.org testing main non-free
 deb http://www.deb-multimedia.org oldstable main non-free
 deb http://www.deb-multimedia.org sid main non-free" |sudo tee /etc/apt/sources.list.d/multimedia.list
-cd /var/cache/apt/archives
-sudo wget -c http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2015.6.1_all.deb
-sudo dpkg -i deb-multimedia-keyring_2015.6.1_all.deb
+sudo wget -Nc -P /var/cache/apt/archives http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2015.6.1_all.deb && \
+sudo dpkg -i /var/cache/apt/archives/deb-multimedia-keyring_2015.6.1_all.deb
 fi
 
 if [[ $elegidos == *Iceweasel* ]]; then
 echo "mozilla.debian.net"
 echo "deb http://mozilla.debian.net/ jessie-backports iceweasel-release
 #deb http://http.debian.net/debian experimental main"|sudo tee /etc/apt/sources.list.d/mozilla.list
-cd /var/cache/apt/archives
-sudo wget -c http://mozilla.debian.net/pkg-mozilla-archive-keyring_1.1_all.deb && sudo dpkg -i pkg-mozilla-archive-keyring_1.1_all.deb
+sudo wget -Nc -P /var/cache/apt/archives http://mozilla.debian.net/pkg-mozilla-archive-keyring_1.1_all.deb && \
+sudo dpkg -i /var/cache/apt/archives/pkg-mozilla-archive-keyring_1.1_all.deb
 fi
 
 if [[ $elegidos == *LMDE* ]]; then
@@ -264,8 +261,8 @@ echo "LMDE Betsy http://community.linuxmint.com/tutorial/view/201"
 echo "deb http://packages.linuxmint.com betsy main upstream import #backport
 deb http://extra.linuxmint.com betsy main #upstream import backport"|sudo tee /etc/apt/sources.list.d/betsy.list
 #~ TODO: añadir clave de LMDE
-cd /var/cache/apt
-sudo wget -c http://packages.linuxmint.com/pool/main/l/linuxmint-keyring/linuxmint-keyring_2009.04.29_all.deb && sudo dpkg -i linuxmint-keyring_2009.04.29_all.deb
+sudo wget -Nc -P /var/cache/apt/archives http://packages.linuxmint.com/pool/main/l/linuxmint-keyring/linuxmint-keyring_2009.04.29_all.deb && \
+sudo dpkg -i /var/cache/apt/archives/linuxmint-keyring_2009.04.29_all.deb
 fi
 
 if [[ $elegidos == *Sparky* ]]; then
@@ -279,7 +276,6 @@ deb     http://www.las.ic.unicamp.br/pub/siduction/extra unstable main
 deb     http://www.las.ic.unicamp.br/pub/siduction/fixes unstable main contrib non-free
 #deb-src http://www.las.ic.unicamp.br/pub/siduction/fixes unstable main contrib non-free
 "|sudo tee /etc/apt/sources.list.d/sparky.list
-cd /tmp
 wget -O - http://sparkylinux.org/repo/sparkylinux.gpg.key | sudo apt-key add -
 
 echo "Package: *                    
