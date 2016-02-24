@@ -14,11 +14,11 @@
 elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
 TRUE Estable \
 TRUE Testing \
-FALSE Sid \
+TRUE Sid \
 FALSE Lxqt \
 TRUE Liquorix \
 TRUE "Sparky y Siduction" \
-FALSE Multimedia \
+TRUE Multimedia \
 TRUE Iceweasel \
 TRUE LMDE \
 FALSE Cantv \
