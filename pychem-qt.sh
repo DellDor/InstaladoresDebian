@@ -6,9 +6,15 @@
 #HACER: Generar entrada correcta en el menú de programas
 #HACER: El objetivo a largo plazo es generar un paquete de manera correcta. 
 
-###############DEPENDENCIAS:
-#Si no se quiere especificar versión de los paquetes, por ejemplo para estable, comentar lo siguiente.
+###############GENERALES
+#Directorio dónde se descargarán los archivos. En /var/tmp no se borran al apagar la PC.
+temporal=/var/tmp
+#temporal=/tmp
+
+#Si no se quiere especificar versión del repositorio de dónde se descargarán los paquetes, por ejemplo para estable, descomentar la segunda línea.
 repositorio="-t testing"
+#unset repositorio
+###############DEPENDENCIAS:
 
 #python, version 2.7 required
 paquete="python2.7"
@@ -47,7 +53,7 @@ paquetes=$(echo python-{pygraph,qscintilla2,pysqlite1.1,matplotlib,numpy,reportl
 libcdt5 libcgraph6 libpathplan4 libxdot4 libgvc6 libgvpr2 graphviz libqscintilla2-l10n python-pydot \
 python2.7 scons gcc gsl-bin cmake git g++ p7zip libpython-dev pyqt4{-dev-tools,.qsci-dev} ipython{,-notebook} bkchem python-{cairo,pip,numpy,matplotlib,reportlab,scipy,qt4,qt4-dev,graphy,sip,pandas,sympy,nose})
 
-sudo aptitude install --visual-preview -t testing $paquetes
+sudo aptitude install --visual-preview $repositorio $paquetes
 
 echo "A continuación cancelar la desinstalación. Así quedan marcado como instalados automáticamente los que correspondan"
 sudo aptitude markauto $paquetes
@@ -61,10 +67,17 @@ sudo pip install CoolProp ezodf -U
 #HACER:pyelemental (tabla periódica)
 
 #OASA  used to show compound extended formula in database
-#wget -cN -P/var/tmp http://bkchem.zirael.org/download/oasa-0.13.1.tar.gz
-#tar -zxvf /var/tmp/oasa-0.13.1.tar.gz
-#sudo python /var/tmp/oasa-0.13.1/setup.py install
+
+#wget -cN -P$temporal http://bkchem.zirael.org/download/oasa-0.13.1.tar.gz
+#tar -zxvf $temporal/oasa-0.13.1.tar.gz
+#sudo python $temporal/oasa-0.13.1/setup.py install
+
+#Luego de instalado bkchem, no hace falta lo precedente, que descargaba manualmente
+if ! aptitude search '~i ~nbkchem' > /dev/null; then
 sudo python /usr/lib/bkchem/bkchem/oasa/setup.py install
+else
+sudo aptitude install bkchem && sudo python /usr/lib/bkchem/bkchem/oasa/setup.py install
+fi
 
 #Freesteam:  package for calculating thermodynamic properties of water by IAPWS-IF97
 #https://sourceforge.net/projects/freesteam/files/freesteam/2.1/python-freesteam_2.1-0~ubuntu1204_i386.deb
@@ -73,26 +86,25 @@ sudo python /usr/lib/bkchem/bkchem/oasa/setup.py install
 #https://sourceforge.net/projects/freesteam/files/freesteam/2.1/freesteam-gtk_2.1-0~ubuntu1204_i386.deb
 fuente="https://sourceforge.net/projects/freesteam/files/freesteam/2.1"
 versiones="_2.1-0~ubuntu1204_i386.deb"
-wget -Nc -P/var/tmp $fuente/{python-freesteam,libfreesteam1,freesteam-ascend,freesteam-gtk}$versiones
-sudo dpkg -i /var/tmp/{python-freesteam,libfreesteam1,freesteam-ascend,freesteam-gtk}$versiones
+wget -Nc -P$temporal $fuente/{python-freesteam,libfreesteam1,freesteam-ascend,freesteam-gtk}$versiones
+sudo dpkg -i $temporal/{python-freesteam,libfreesteam1,freesteam-ascend,freesteam-gtk}$versiones
 
 ###############PROGRAMA EN SÍ
-wget -Nc -P/var/tmp https://github.com/jjgomera/pychemqt/archive/master.zip
-unzip /var/tmp/master.zip
+#Descarga y descomprime
+wget -Nc -P$temporal https://github.com/jjgomera/pychemqt/archive/master.zip
+unzip $temporal/master.zip
+
+#Se cambia la dirección del home del autor por una automática para que muestren las imágenes
+malo="\"\/home\/jjgomera\/pychemqt\/\""
+bueno="os.path.abspath(\'\')"
+sed -i -e 's/'"$malo"'/'"$bueno"'/g' $temporal/pychemqt-master/tools/UI_databank.py
+sed -i -e 's/'"$malo"'/'"$bueno"'/g' $temporal/pychemqt-master/tools/dependences.py
+
 sudo bash -c 'mkdir -p /opt/pychemqt
-cp -vra /var/tmp/pychemqt-master/* /opt/pychemqt
+cp -vra $temporal/pychemqt-master/* /opt/pychemqt
 chmod a+x /opt/pychemqt/pychemqt.py'
 
-#HACER:Cambiar
-#os.environ["pychemqt"]="/home/jjgomera/pychemqt/"
-#por:
-#os.environ["pychemqt"]=os.path.abspath('')
-#en:
-#/pychemqt-master/tools/UI_databank.py
-#/pychemqt-master/tools/dependences.py
-
-#Para ejecutar:
-#python -v /opt/pychemqt/pychemqt.py
+#Se creaq un .desktop en el escritorio para ejcutarlo.
 
 cat <<FDA >$(xdg-user-dir DESKTOP)/pychemqt.desktop 
 #!/usr/bin/env xdg-open
@@ -101,7 +113,7 @@ Version=1.0
 Name=Pychem-Qt
 Comment=Simulador de procesos Químicos
 Path=/opt/pychemqt
-Exec=python pychemqt.py
+Exec=python -v pychemqt.py
 Type=Application
 Terminal=false
 Icon=/opt/pychemqt/images/pychemqt.png
@@ -109,6 +121,7 @@ Categories=Utility;Application;
 FDA
 chmod a+x $(xdg-user-dir DESKTOP)/pychemqt.desktop
 
+#Para deshacer todo lo anterior, ejecutar aparte
 desinstalar(){
 sudo pip unistall CoolProp ezodf
 
@@ -117,5 +130,8 @@ libcdt5 libcgraph6 libpathplan4 libxdot4 libgvc6 libgvpr2 graphviz libqscintilla
 python2.7 scons gcc gsl-bin cmake git g++ p7zip libpython-dev pyqt4{-dev-tools,.qsci-dev} ipython{,-notebook} bkchem python-{cairo,pip,numpy,matplotlib,reportlab,scipy,qt4,qt4-dev,graphy,sip,pandas,sympy,nose})
 sudo aptitude markauto --visual-preview $paquetes
 
-rm $(xdg-user-dir DESKTOP)/pychemqt.desktop
+rm -r $(xdg-user-dir DESKTOP)/pychemqt.desktop /opt/pychemqt
+
+temporal=/var/tmp
+
 }
