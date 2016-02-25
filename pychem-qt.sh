@@ -62,8 +62,9 @@ sudo aptitude markauto $paquetes
 #curl -OL 
 wget -Nc -P/var/tmp https://github.com/jjgomera/pychemqt/archive/master.zip
 unzip /var/tmp/master.zip
-
-install -D /var/tmp/pychemqt-master /opt/pychemqt
+sudo bash -c 'mkdir -p /opt/pychemqt
+sudo cp -vra /var/tmp/pychemqt-master/* /opt/pychemqt
+chmod a+x /opt/pychemqt/pychemqt.py'
 
 #TODO:Cambiar
 #os.environ["pychemqt"]="/home/jjgomera/pychemqt/"
@@ -73,5 +74,5 @@ install -D /var/tmp/pychemqt-master /opt/pychemqt
 #/pychemqt-master/tools/UI_databank.py
 #/pychemqt-master/tools/dependences.py
 
-
+#Para ejecutar:
 python -v /opt/pychemqt/pychemqt.py
