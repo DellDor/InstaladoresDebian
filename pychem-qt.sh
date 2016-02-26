@@ -2,7 +2,7 @@
 #Instalador manual de pychem-qt para Debian (testing).
 #Por DellDor en correo de google punto com
 
-#Repositorio del Pychem-Qt: https://github.com/jjgomera/pychemqt
+#Repositorio del Pychem-Qt de Juan José Gómez Romera: https://github.com/jjgomera/pychemqt
 
 #Este guión es probado en sparky-linux Mate actualizado en la fecha de último Commit
 #y depende de aptitude, dpkg, wget, chmod, unzip, sed; curl solo para comprobador de repositorio
@@ -67,21 +67,6 @@ Responda que no a la siguiente pregunta. Sirve para marcar como automático lo q
 ################# #################### #################"
 aptitude markauto -P $paquete'
 
-###############CON TODAS LAS DEPENDENCIAS Y PAQUETES AUXILIARES. Se puede empezar directamente por aquí
-#Con dependencias y todo:
-#paquetes=$(echo python-{pygraph,qscintilla2,pysqlite1.1,matplotlib,numpy,reportlab,scipy} sqlite3 libsqlite3-0 libcdt5 libcgraph6 libpathplan4 libxdot4 libgvc6 libgvpr2 graphviz libqscintilla2-l10n python-pydot python2.7 p7zip libpython-dev pyqt4{-dev-tools,.qsci-dev} ipython{,-notebook} bkchem python-{cairo,pip,numpy,matplotlib,reportlab,scipy,qt4,qt4-dev,graphy,sip,pandas,sympy,nose} libgsl0ldbl build-essential)
-#scons gcc gsl-bin cmake git g++
-
-#sudo aptitude install --visual-preview $repositorio $paquetes
-#echo "################# #################### #################
-
-
-
-
-#Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que corresponda
-################# #################### #################"
-#sudo aptitude markauto -P $paquetes
-
 ###############ADICIONALES VÍA PIP
 
 #CoolProp (propiedades termodinámicas:3.6Mb) y ezodf (ofimática ods:125 kb) 
@@ -89,22 +74,11 @@ sudo pip install CoolProp ezodf -U
 
 ###############OTROS ADICIONALES
 #OASA  used to show compound extended formula in database
-
-#wget -cN -P$temporal http://bkchem.zirael.org/download/oasa-0.13.1.tar.gz
-#tar -zxvf $temporal/oasa-0.13.1.tar.gz
-#sudo python $temporal/oasa-0.13.1/setup.py install
-
-#Luego de instalado bkchem, no hace falta lo precedente, que descargaba manualmente
+#Luego de instalado bkchem
 sudo python /usr/lib/bkchem/bkchem/oasa/setup.py install
-
 
 #Freesteam:  package for calculating thermodynamic properties of water by IAPWS-IF97
 #El -gtk no es requerido, pero ya que se instalarán los demás...
-#https://sourceforge.net/projects/freesteam/files/freesteam/2.1/libfreesteam1_2.1-0~ubuntu1204_i386.deb
-#https://sourceforge.net/projects/freesteam/files/freesteam/2.1/python-freesteam_2.1-0~ubuntu1204_i386.deb
-#https://sourceforge.net/projects/freesteam/files/freesteam/2.1/freesteam-gtk_2.1-0~ubuntu1204_i386.deb
-#sudo aptitude install --visual-preview libgsl0ldbl #ATENCIÓN, libgsl0ldbl rompe libgsl2, dependencia de Inkscape y otros 
-
 fuente="https://sourceforge.net/projects/freesteam/files/freesteam/2.1"
 versiones="_2.1-0~ubuntu1204_i386.deb"
 wget -Nc -P$temporal $fuente/{libfreesteam1,python-freesteam,freesteam-gtk}$versiones 
@@ -126,7 +100,6 @@ cp -vra $temporal/pychemqt-master/* /opt/pychemqt
 chmod a+x /opt/pychemqt/pychemqt.py'
 
 #Se creaq un .desktop en el escritorio para ejcutarlo.
-
 cat <<FDA >$(xdg-user-dir DESKTOP)/pychemqt.desktop 
 #!/usr/bin/env xdg-open
 [Desktop Entry]
