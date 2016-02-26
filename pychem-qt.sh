@@ -1,12 +1,24 @@
 #!/bin/bash
-#Instalador manual de pychem-qt para Debian. Por DellDor en correo de google punto com
-#Depende de aptitude, dpkg, wget, chmod, unzip, sed
+#Instalador manual de pychem-qt para Debian (testing).
+#Por DellDor en correo de google punto com
+
+#Repositorio del Pychem-Qt: https://github.com/jjgomera/pychemqt
+
+#Este guión es probado en sparky-linux Mate actualizado en la fecha de último Commit
+#y depende de aptitude, dpkg, wget, chmod, unzip, sed; curl solo para comprobador de repositorio
 
 #Para descargar y ejecutar este instalador TALCUAL ESTÁ, ejecutar la siguiente línea
 #wget -NP/tmp https://raw.githubusercontent.com/DellDor/InstaladoresDebian/master/pychem-qt.sh && chmod a+x /tmp/pychem-qt.sh && bash /tmp/pychem-qt.sh
 
-#Repositorio del programa: https://github.com/jjgomera/pychemqt
+#Revisa si no se ha actualizado el repositorio desde la última edición de este guión
+if curl https://github.com/jjgomera/pychemqt | grep 'dateModified"><time datetime="2015-07-09T22:59:32Z"' > /dev/null; then
+echo "El repositorio del programa no ha cambiado. Puede continuar"
+else
+echo "El repositorio original del programa ha cambiado. Por favor contacte al editor del guión para posibles correcciones."
+fi
 
+#HACER:Instalar pyelemental (tabla periódica)
+#HACER: encontrar otra fuente o forma de instalar Freesteam. Una de sus dependencias rompe paquetes en Testing para feb 2016.
 #HACER: Generar entrada correcta en el menú de programas. Se puede estudiar lo del paquete freesteam-gtk
 #HACER: El objetivo a largo plazo es generar un paquete de manera correcta. 
 
@@ -36,14 +48,13 @@ paquete=$(echo $paquete python-matplotlib)
 paquete=$(echo $paquete python-pygraph)
 
 ###############DEPENDENCIAS PARA ADICIONALES:
-#Para Coolprop y ezodf:
+#Para Coolprop y ezodf
 paquete=$(echo $paquete python-pip build-essential libpython-dev)
-#git cmake g++
 
-#Para freesteam
+#Para Freesteam
 paquete=$(echo $paquete libgsl0ldbl)
 
-#Para oasa https://packages.debian.org/stretch/all/bkchem/filelist:
+#Para oasa
 export paquete=$(echo $paquete bkchem)
 
 sudo -E bash -c 'aptitude install --visual-preview $repositorio $paquete
@@ -77,8 +88,6 @@ aptitude markauto -P $paquete'
 sudo pip install CoolProp ezodf -U
 
 ###############OTROS ADICIONALES
-#HACER:pyelemental (tabla periódica)
-
 #OASA  used to show compound extended formula in database
 
 #wget -cN -P$temporal http://bkchem.zirael.org/download/oasa-0.13.1.tar.gz
