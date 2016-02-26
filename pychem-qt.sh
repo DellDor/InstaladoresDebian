@@ -2,7 +2,8 @@
 #Instalador manual de pychem-qt para Debian. Por DellDor en correo de google punto com
 #Depende de aptitude, dpkg, wget, chmod, unzip, sed
 
-#wget -P/tmp https://raw.githubusercontent.com/DellDor/InstaladoresDebian/master/pychem-qt.sh && chmod a+x /tmp/pychem-qt.sh && bash /tmp/pychem-qt.sh
+#Para descargar y ejecutar este instalador TALCUAL ESTÁ, ejecutar la siguiente línea
+#wget -NP/tmp https://raw.githubusercontent.com/DellDor/InstaladoresDebian/master/pychem-qt.sh && chmod a+x /tmp/pychem-qt.sh && bash /tmp/pychem-qt.sh
 
 #Repositorio del programa: https://github.com/jjgomera/pychemqt
 
@@ -40,12 +41,11 @@ paquete=$(echo $paquete python-pip build-essential libpython-dev)
 #git cmake g++
 
 #Para freesteam
-paquete=$(echo $paquete libgsl0ldbl) #libgsl0-dev sustituido por libgsl-dev para no romper otras dependencias . scons gcc gsl-bin debhelper libgsl-dev
+paquete=$(echo $paquete libgsl0ldbl)
 
-#Para Oasa https://packages.debian.org/stretch/all/bkchem/filelist:
+#Para oasa https://packages.debian.org/stretch/all/bkchem/filelist:
 export paquete=$(echo $paquete bkchem)
 
-#pkcon install $paquete ||
 sudo -E bash -c 'aptitude install --visual-preview $repositorio $paquete
 echo "################# #################### #################
 
