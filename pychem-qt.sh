@@ -23,7 +23,7 @@ repositorio="-t testing"
 paquete="python2.7 p7zip"
 
 #pyqt4, developed with version 4.9
-paquete=$(echo $paquete pyqt4{-dev-tools,.qsci-dev})
+paquete=$(echo $paquete pyqt4{-dev-tools,.qsci-dev,qscintilla2})
 
 #Numpy-scipy: python library for mathematical computation
 paquete=$(echo $paquete python-{numpy,scipy,sympy})
