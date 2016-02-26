@@ -43,7 +43,7 @@ paquete=$(echo $paquete scons gcc gsl-bin python-dev debhelper libgsl-dev) #libg
 export paquete=$(echo $paquete bkchem)
 
 #pkcon install $paquete ||
-echo "Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que correponda"
+echo "Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que corresponda"
 sudo -E bash -c 'aptitude install --visual-preview $repositorio $paquete
 aptitude markauto -P $paquete'
 
@@ -54,7 +54,7 @@ libcdt5 libcgraph6 libpathplan4 libxdot4 libgvc6 libgvpr2 graphviz libqscintilla
 python2.7 scons gcc gsl-bin cmake git g++ p7zip libpython-dev pyqt4{-dev-tools,.qsci-dev} ipython{,-notebook} bkchem python-{cairo,pip,numpy,matplotlib,reportlab,scipy,qt4,qt4-dev,graphy,sip,pandas,sympy,nose})
 
 sudo aptitude install --visual-preview $repositorio $paquetes
-echo "Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que correponda"
+echo "Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que corresponda"
 sudo aptitude markauto -P $paquetes
 
 ###############ADICIONALES VÍA PIP
@@ -121,15 +121,14 @@ chmod a+x $(xdg-user-dir DESKTOP)/pychemqt.desktop
 
 #Para deshacer todo lo anterior, ejecutar aparte
 desinstalar(){
-sudo pip unistall CoolProp ezodf
+sudo pip uninstall CoolProp ezodf
 
 paquetes=$(echo python-{pygraph,qscintilla2,pysqlite1.1,matplotlib,numpy,reportlab,scipy} sqlite3 libsqlite3-0 \
 libcdt5 libcgraph6 libpathplan4 libxdot4 libgvc6 libgvpr2 graphviz libqscintilla2-l10n python-pydot \
 python2.7 scons gcc gsl-bin cmake git g++ p7zip libpython-dev pyqt4{-dev-tools,.qsci-dev} ipython{,-notebook} bkchem python-{cairo,pip,numpy,matplotlib,reportlab,scipy,qt4,qt4-dev,graphy,sip,pandas,sympy,nose})
 sudo aptitude markauto --visual-preview $paquetes
 
-rm -r $(xdg-user-dir DESKTOP)/pychemqt.desktop /opt/pychemqt
-
 temporal=/var/tmp
-rm $temporal/master.zip $temporal/{python-freesteam,libfreesteam1,freesteam-ascend,freesteam-gtk}*.deb 
+rm -v $(xdg-user-dir DESKTOP)/pychemqt.desktop $temporal/master.zip $temporal/*freesteam*.deb 
+sudo rm -rv /opt/pychemqt
 }
