@@ -1,15 +1,16 @@
 #!/bin/bash
 #Instalador manual de pychem-qt para Debian. Por DellDor en correo de google punto com
+#Depende de aptitude, dpkg, wget, chmod, unzip, sed
 
 #Repositorio del programa: https://github.com/jjgomera/pychemqt
 
-#HACER: Generar entrada correcta en el menú de programas
+#HACER: Generar entrada correcta en el menú de programas. Se puede estudiar lo del paquete freesteam-gtk
 #HACER: El objetivo a largo plazo es generar un paquete de manera correcta. 
 
 ###############GENERALES
-#Directorio dónde se descargarán los archivos. En /var/tmp no se borran al apagar la PC.
-temporal=/var/tmp
-#temporal=/tmp
+#Directorio dónde se descargarán los archivos. En /var/tmp no se borran los archivos al apagar la PC,en /tmp sí.
+export temporal=/var/tmp
+#export temporal=/tmp
 
 #Si no se quiere especificar versión del repositorio de dónde se descargarán los paquetes, por ejemplo para estable, descomentar la segunda línea.
 repositorio="-t testing"
@@ -36,16 +37,15 @@ paquete=$(echo $paquete python-pygraph)
 paquete=$(echo $paquete python-pip cmake git g++ p7zip libpython-dev)
 
 #Para freesteam
-paquete=$(echo $paquete scons gcc gsl-bin python-dev debhelper libgsl0-dev)
+paquete=$(echo $paquete scons gcc gsl-bin python-dev debhelper libgsl-dev) #libgsl0-dev sustituido por libgsl-dev para no romper otras dependencias 
 
 #Para Oasa https://packages.debian.org/stretch/all/bkchem/filelist:
-paquete=$(echo $paquete bkchem)
-
-echo $paquete
+export paquete=$(echo $paquete bkchem)
 
 #pkcon install $paquete ||
-sudo bash -c 'aptitude install --visual-preview $repositorio $paquete
-aptitude markauto $paquete'
+echo "Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que correponda"
+sudo -E bash -c 'aptitude install --visual-preview $repositorio $paquete
+aptitude markauto -P $paquete'
 
 ###############CON TODAS LAS DEPENDENCIAS Y PAQUETES AUXILIARES. Se puede empezar directamente por aquí
 #Con dependencias y todo:
@@ -54,9 +54,8 @@ libcdt5 libcgraph6 libpathplan4 libxdot4 libgvc6 libgvpr2 graphviz libqscintilla
 python2.7 scons gcc gsl-bin cmake git g++ p7zip libpython-dev pyqt4{-dev-tools,.qsci-dev} ipython{,-notebook} bkchem python-{cairo,pip,numpy,matplotlib,reportlab,scipy,qt4,qt4-dev,graphy,sip,pandas,sympy,nose})
 
 sudo aptitude install --visual-preview $repositorio $paquetes
-
-echo "A continuación cancelar la desinstalación. Así quedan marcado como instalados automáticamente los que correspondan"
-sudo aptitude markauto $paquetes
+echo "Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que correponda"
+sudo aptitude markauto -P $paquetes
 
 ###############ADICIONALES VÍA PIP
 
@@ -73,21 +72,20 @@ sudo pip install CoolProp ezodf -U
 #sudo python $temporal/oasa-0.13.1/setup.py install
 
 #Luego de instalado bkchem, no hace falta lo precedente, que descargaba manualmente
-if ! aptitude search '~i ~nbkchem' > /dev/null; then
 sudo python /usr/lib/bkchem/bkchem/oasa/setup.py install
-else
-sudo aptitude install bkchem && sudo python /usr/lib/bkchem/bkchem/oasa/setup.py install
-fi
+
 
 #Freesteam:  package for calculating thermodynamic properties of water by IAPWS-IF97
-#https://sourceforge.net/projects/freesteam/files/freesteam/2.1/python-freesteam_2.1-0~ubuntu1204_i386.deb
+#El -gtk no es requerido, pero ya que se instalarán los demás...
 #https://sourceforge.net/projects/freesteam/files/freesteam/2.1/libfreesteam1_2.1-0~ubuntu1204_i386.deb
-#https://sourceforge.net/projects/freesteam/files/freesteam/2.1/freesteam-ascend_2.1-0~ubuntu1204_i386.deb
+#https://sourceforge.net/projects/freesteam/files/freesteam/2.1/python-freesteam_2.1-0~ubuntu1204_i386.deb
 #https://sourceforge.net/projects/freesteam/files/freesteam/2.1/freesteam-gtk_2.1-0~ubuntu1204_i386.deb
+sudo aptitude install --visual-preview libgsl0ldbl #ATENCIÓN, libgsl0ldbl rompe libgsl2, dependencia de Inkscape y otros 
+
 fuente="https://sourceforge.net/projects/freesteam/files/freesteam/2.1"
 versiones="_2.1-0~ubuntu1204_i386.deb"
-wget -Nc -P$temporal $fuente/{python-freesteam,libfreesteam1,freesteam-ascend,freesteam-gtk}$versiones
-sudo dpkg -i $temporal/{python-freesteam,libfreesteam1,freesteam-ascend,freesteam-gtk}$versiones
+wget -Nc -P$temporal $fuente/{libfreesteam1,python-freesteam,freesteam-gtk}$versiones 
+sudo dpkg -i $temporal/{libfreesteam1,python-freesteam,freesteam-gtk}$versiones
 
 ###############PROGRAMA EN SÍ
 #Descarga y descomprime
@@ -100,7 +98,7 @@ bueno="os.path.abspath(\'\')"
 sed -i -e 's/'"$malo"'/'"$bueno"'/g' $temporal/pychemqt-master/tools/UI_databank.py
 sed -i -e 's/'"$malo"'/'"$bueno"'/g' $temporal/pychemqt-master/tools/dependences.py
 
-sudo bash -c 'mkdir -p /opt/pychemqt
+sudo -E bash -c 'mkdir -p /opt/pychemqt
 cp -vra $temporal/pychemqt-master/* /opt/pychemqt
 chmod a+x /opt/pychemqt/pychemqt.py'
 
@@ -133,5 +131,5 @@ sudo aptitude markauto --visual-preview $paquetes
 rm -r $(xdg-user-dir DESKTOP)/pychemqt.desktop /opt/pychemqt
 
 temporal=/var/tmp
-
+rm $temporal/master.zip $temporal/{python-freesteam,libfreesteam1,freesteam-ascend,freesteam-gtk}*.deb 
 }
