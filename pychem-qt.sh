@@ -20,7 +20,7 @@ repositorio="-t testing"
 ###############DEPENDENCIAS:
 
 #python, version 2.7 required
-paquete="python2.7"
+paquete="python2.7 p7zip"
 
 #pyqt4, developed with version 4.9
 paquete=$(echo $paquete pyqt4{-dev-tools,.qsci-dev})
@@ -35,33 +35,45 @@ paquete=$(echo $paquete python-matplotlib)
 paquete=$(echo $paquete python-pygraph)
 
 ###############DEPENDENCIAS PARA ADICIONALES:
-#Para Coolprop:
-paquete=$(echo $paquete python-pip cmake git g++ p7zip libpython-dev)
+#Para Coolprop y ezodf:
+paquete=$(echo $paquete python-pip build-essential libpython-dev)
+#git cmake g++
 
 #Para freesteam
-paquete=$(echo $paquete scons gcc gsl-bin python-dev debhelper libgsl-dev) #libgsl0-dev sustituido por libgsl-dev para no romper otras dependencias 
+paquete=$(echo $paquete libgsl0ldbl) #libgsl0-dev sustituido por libgsl-dev para no romper otras dependencias . scons gcc gsl-bin debhelper libgsl-dev
 
 #Para Oasa https://packages.debian.org/stretch/all/bkchem/filelist:
 export paquete=$(echo $paquete bkchem)
 
 #pkcon install $paquete ||
-echo "Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que corresponda"
 sudo -E bash -c 'aptitude install --visual-preview $repositorio $paquete
+echo "################# #################### #################
+
+
+
+
+Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que corresponda
+################# #################### #################"
 aptitude markauto -P $paquete'
 
 ###############CON TODAS LAS DEPENDENCIAS Y PAQUETES AUXILIARES. Se puede empezar directamente por aquí
 #Con dependencias y todo:
-paquetes=$(echo python-{pygraph,qscintilla2,pysqlite1.1,matplotlib,numpy,reportlab,scipy} sqlite3 libsqlite3-0 \
-libcdt5 libcgraph6 libpathplan4 libxdot4 libgvc6 libgvpr2 graphviz libqscintilla2-l10n python-pydot \
-python2.7 scons gcc gsl-bin cmake git g++ p7zip libpython-dev pyqt4{-dev-tools,.qsci-dev} ipython{,-notebook} bkchem python-{cairo,pip,numpy,matplotlib,reportlab,scipy,qt4,qt4-dev,graphy,sip,pandas,sympy,nose})
+#paquetes=$(echo python-{pygraph,qscintilla2,pysqlite1.1,matplotlib,numpy,reportlab,scipy} sqlite3 libsqlite3-0 libcdt5 libcgraph6 libpathplan4 libxdot4 libgvc6 libgvpr2 graphviz libqscintilla2-l10n python-pydot python2.7 p7zip libpython-dev pyqt4{-dev-tools,.qsci-dev} ipython{,-notebook} bkchem python-{cairo,pip,numpy,matplotlib,reportlab,scipy,qt4,qt4-dev,graphy,sip,pandas,sympy,nose} libgsl0ldbl build-essential)
+#scons gcc gsl-bin cmake git g++
 
-sudo aptitude install --visual-preview $repositorio $paquetes
-echo "Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que corresponda"
-sudo aptitude markauto -P $paquetes
+#sudo aptitude install --visual-preview $repositorio $paquetes
+#echo "################# #################### #################
+
+
+
+
+#Responda que no a la siguiente pregunta. Sirve para marcar como automático lo que corresponda
+################# #################### #################"
+#sudo aptitude markauto -P $paquetes
 
 ###############ADICIONALES VÍA PIP
 
-#CoolProp (propiedades termodinámicas), ezodf (offimática ods) 
+#CoolProp (propiedades termodinámicas:3.6Mb) y ezodf (ofimática ods:125 kb) 
 sudo pip install CoolProp ezodf -U
 
 ###############OTROS ADICIONALES
@@ -82,7 +94,7 @@ sudo python /usr/lib/bkchem/bkchem/oasa/setup.py install
 #https://sourceforge.net/projects/freesteam/files/freesteam/2.1/libfreesteam1_2.1-0~ubuntu1204_i386.deb
 #https://sourceforge.net/projects/freesteam/files/freesteam/2.1/python-freesteam_2.1-0~ubuntu1204_i386.deb
 #https://sourceforge.net/projects/freesteam/files/freesteam/2.1/freesteam-gtk_2.1-0~ubuntu1204_i386.deb
-sudo aptitude install --visual-preview libgsl0ldbl #ATENCIÓN, libgsl0ldbl rompe libgsl2, dependencia de Inkscape y otros 
+#sudo aptitude install --visual-preview libgsl0ldbl #ATENCIÓN, libgsl0ldbl rompe libgsl2, dependencia de Inkscape y otros 
 
 fuente="https://sourceforge.net/projects/freesteam/files/freesteam/2.1"
 versiones="_2.1-0~ubuntu1204_i386.deb"
@@ -92,13 +104,13 @@ sudo dpkg -i $temporal/{libfreesteam1,python-freesteam,freesteam-gtk}$versiones
 ###############PROGRAMA EN SÍ
 #Descarga y descomprime
 wget -Nc -P$temporal https://github.com/jjgomera/pychemqt/archive/master.zip
-unzip $temporal/master.zip
+unzip $temporal/master.zip -d $temporal
 
 #Se cambia la dirección del home del autor por una automática para que muestren las imágenes
-malo="\"\/home\/jjgomera\/pychemqt\/\""
-bueno="os.path.abspath(\'\')"
-sed -i -e 's/'"$malo"'/'"$bueno"'/g' $temporal/pychemqt-master/tools/UI_databank.py
-sed -i -e 's/'"$malo"'/'"$bueno"'/g' $temporal/pychemqt-master/tools/dependences.py
+cambiame="\"\/home\/jjgomera\/pychemqt\/\""
+poreste="os.path.abspath(\'\')"
+sed -i -e 's/'"$cambiame"'/'"$poreste"'/g' $temporal/pychemqt-master/tools/UI_databank.py
+sed -i -e 's/'"$cambiame"'/'"$poreste"'/g' $temporal/pychemqt-master/tools/dependences.py
 
 sudo -E bash -c 'mkdir -p /opt/pychemqt
 cp -vra $temporal/pychemqt-master/* /opt/pychemqt
@@ -127,10 +139,10 @@ sudo pip uninstall CoolProp ezodf
 
 paquetes=$(echo python-{pygraph,qscintilla2,pysqlite1.1,matplotlib,numpy,reportlab,scipy} sqlite3 libsqlite3-0 \
 libcdt5 libcgraph6 libpathplan4 libxdot4 libgvc6 libgvpr2 graphviz libqscintilla2-l10n python-pydot \
-python2.7 scons gcc gsl-bin cmake git g++ p7zip libpython-dev pyqt4{-dev-tools,.qsci-dev} ipython{,-notebook} bkchem python-{cairo,pip,numpy,matplotlib,reportlab,scipy,qt4,qt4-dev,graphy,sip,pandas,sympy,nose})
+python2.7 scons gcc gsl-bin cmake git g++ p7zip libpython-dev pyqt4{-dev-tools,.qsci-dev} ipython{,-notebook} bkchem python-{cairo,pip,numpy,matplotlib,reportlab,scipy,qt4,qt4-dev,graphy,sip,pandas,sympy,nose} build-essential)
 sudo aptitude markauto --visual-preview $paquetes
 
 temporal=/var/tmp
-rm -v $(xdg-user-dir DESKTOP)/pychemqt.desktop $temporal/master.zip $temporal/*freesteam*.deb 
+rm -v $(xdg-user-dir DESKTOP)/pychemqt.desktop $temporal/master.zip $temporal/*freesteam*.deb $temporal/pychemqt-master/
 sudo rm -rv /opt/pychemqt
 }
