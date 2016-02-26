@@ -2,6 +2,8 @@
 #Instalador manual de pychem-qt para Debian. Por DellDor en correo de google punto com
 #Depende de aptitude, dpkg, wget, chmod, unzip, sed
 
+#wget -P/tmp https://raw.githubusercontent.com/DellDor/InstaladoresDebian/master/pychem-qt.sh && chmod a+x /tmp/pychem-qt.sh && bash /tmp/pychem-qt.sh
+
 #Repositorio del programa: https://github.com/jjgomera/pychemqt
 
 #HACER: Generar entrada correcta en el menú de programas. Se puede estudiar lo del paquete freesteam-gtk
