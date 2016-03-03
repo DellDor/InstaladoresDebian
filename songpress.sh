@@ -28,7 +28,8 @@ Exec=python main.py
 Type=Application
 Terminal=false
 Icon=/opt/songpress/img/songpress.png
-Categories=Utility;Application;
+Categories=AudioVideo;
 EOD
 
-chmod a+x $(xdg-user-dir DESKTOP)/songpress.desktop
+sudo cp -v $(xdg-user-dir DESKTOP)/songpress.desktop /usr/share/applications/songpress.desktop
+sudo chmod a+x {/usr/share/applications,$(xdg-user-dir DESKTOP)}/songpress.desktop
