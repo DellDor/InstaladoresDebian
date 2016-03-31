@@ -360,3 +360,6 @@ if $(yad --center --image "dialog-question" --title "Actualizaciones una a una" 
 #~ xterm -maximized -e
 aptitude search ~U -F %p|xargs -i sudo apt-get install -q "{}"
 fi
+
+#HACER: Revisar si está instalado fslint-gui
+sudo fslint-gui /var/cache/{apt,apt-cacher-ng}
