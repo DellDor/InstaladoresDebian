@@ -11,6 +11,17 @@
 
 #Guión de descarga movido a https://github.com/DellDor/aliasbash/.bash_aliases_debian.sh
 
+instalallave() {
+#Busca, descarga e instala el paquete indicado. Para keyring.
+#Entra la dirección de dónde está el paquete de este momento, solo para referencia. Determina el paquete actual en el servidor, con la última 
+directorio=$(dirname $1)
+#~ archivo=$(curl -L $directorio| grep _all.deb| cut -d\" -f2)
+archivo=$(curl -L $directorio| tr "\"" "\n"| grep _all.deb$ |tail -n1)
+
+sudo wget -Nc -P /var/cache/apt/archives/ $directorio/$archivo
+sudo dpkg -i /var/cache/apt/archives/$archivo
+}
+
 elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
 TRUE Estable \
 TRUE Testing \
@@ -61,8 +72,8 @@ deb http://httpredir.debian.org/debian jessie-backports main contrib non-free
 
 deb http://security.debian.org/ stable/updates main contrib non-free
 #deb-src http://security.debian.org/ stable/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/stable.list
-sudo wget -N -P /var/cache/apt/archives http://mirror-01.cantv.net/debian/pool/main/d/debian-archive-keyring/debian-archive-keyring_2014.3_all.deb && \
-sudo dpkg -i /var/cache/apt/archives/debian-archive-keyring_2014.3_all.deb
+
+instalallave http://debian.uniminuto.edu/pool/main/d/debian-archive-keyring/?C=M;O=A/paquete
 
 echo "Package: *                    
 Pin: release a=jessie-backports
@@ -243,25 +254,21 @@ deb http://www.deb-multimedia.org testing main non-free
 deb http://www.deb-multimedia.org oldstable main non-free
 deb http://www.deb-multimedia.org sid main non-free" |sudo tee /etc/apt/sources.list.d/multimedia.list
 
-sudo wget -Nc -P/var/cache/apt/archives http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/$(curl http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/ |grep --colour _all.deb| cut -d\" -f2) && \
-sudo dpkg -i /var/cache/apt/archives/deb-multimedia-keyring_*_all.deb
+instalallave http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_246246016.3.7_all.deb
 fi
 
 if [[ $elegidos == *Iceweasel* ]]; then
 echo "mozilla.debian.net"
 echo "deb http://mozilla.debian.net/ jessie-backports iceweasel-release
 #deb http://http.debian.net/debian experimental main"|sudo tee /etc/apt/sources.list.d/mozilla.list
-sudo wget -Nc -P /var/cache/apt/archives http://mozilla.debian.net/pkg-mozilla-archive-keyring_1.1_all.deb && \
-sudo dpkg -i /var/cache/apt/archives/pkg-mozilla-archive-keyring_1.1_all.deb
+instalallave http://mozilla.debian.net/pkg-mozilla-archive-keyring_1.1_all.deb 
 fi
 
 if [[ $elegidos == *LMDE* ]]; then
 echo "LMDE Betsy http://community.linuxmint.com/tutorial/view/201"
 echo "deb http://packages.linuxmint.com betsy main upstream import #backport
 deb http://extra.linuxmint.com betsy main #upstream import backport"|sudo tee /etc/apt/sources.list.d/betsy.list
-#HACER: añadir clave de LMDE
-sudo wget -Nc -P /var/cache/apt/archives http://packages.linuxmint.com/pool/main/l/linuxmint-keyring/linuxmint-keyring_2009.04.29_all.deb && \
-sudo dpkg -i /var/cache/apt/archives/linuxmint-keyring_2009.04.29_all.deb
+instalallave http://packages.linuxmint.com/pool/main/l/linuxmint-keyring/linuxmint-keyring_2009.04.29_all.deb
 fi
 
 if [[ $elegidos == *Sparky* ]]; then
@@ -328,6 +335,8 @@ wget -O- https://deb.opera.com/archive.key | sudo apt-key add -
 fi
 fi
 
+################
+################
 ################
 echo 'Acquire::Check-Valid-Until "false";' | sudo tee /etc/apt/apt.conf.d/80update-caduco
 
