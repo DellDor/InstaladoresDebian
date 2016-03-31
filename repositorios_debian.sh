@@ -242,7 +242,7 @@ deb http://www.deb-multimedia.org stable-backports main #non-free
 deb http://www.deb-multimedia.org testing main non-free
 deb http://www.deb-multimedia.org oldstable main non-free
 deb http://www.deb-multimedia.org sid main non-free" |sudo tee /etc/apt/sources.list.d/multimedia.list
-sudo wget -Nc -P /var/cache/apt/archives http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2015.6.1_all.deb && \
+sudo wget -Nc -P /var/cache/apt/archives http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.3.7_all.deb && \
 sudo dpkg -i /var/cache/apt/archives/deb-multimedia-keyring_2015.6.1_all.deb
 fi
 
