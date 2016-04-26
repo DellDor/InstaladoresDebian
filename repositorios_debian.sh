@@ -22,7 +22,16 @@ sudo wget -Nc -P /var/cache/apt/archives/ $directorio/$archivo
 sudo dpkg -i /var/cache/apt/archives/$archivo
 }
 
+desactivarepos(){
+#Desactiva todos los repositorios
+sudo sed -i 's/deb /#deb /g' /etc/apt/sources.list.d/*.list
+for i in $(find /etc/apt/ -iname "*.list" -type f); do
+awk '{print "#"$0}' ${i}|sudo tee ${i}
+done
+}
+
 elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
+FALSE "0- Desactivar todos los repositorios anteriores"
 TRUE Estable \
 TRUE Testing \
 TRUE Sid \
@@ -43,19 +52,16 @@ FALSE "Cairo Dock" \
 FALSE PlayOnLinux \
 --print-all| sed -r 's/([A-Z]+\|[[:alpha:]]+)\|([A-Z]+\|[[:alpha:]]+)\|/\1\n\2/' | grep TRUE | cut -f2 -d\|`
 
-#~ #Desactiva otros repositorios
-#~ #sudo sed -i 's/deb /#deb /g' /etc/apt/sources.list.d/*.list
-#~ for i in $(find /etc/apt/ -iname "*.list" -type f); do
-#~ awk '{print "#"$0}' ${i}|sudo tee ${i}
-#~ done
-
-#Se puede borrar los listados descargados
+#Se pudieran borrar los listados descargados
 #sudo find /var/cache/apt/ -type f -exec rm -v {} \;
 #sudo find /var/lib/apt/lists/ -type f -exec rm -v {} \;
 
-
 #Elimina listados antiguos
 #sudo find /var/lib/apt/lists/ -type f -exec rm -v {} \;
+
+if [[ $elegidos == 0-* ]]; then
+desactivarepos
+fi
 
 #if [[ $elegidos == *Estable* ]]; then
 if echo $elegidos|grep -w "Estable" > /dev/null; then
