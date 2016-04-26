@@ -16,10 +16,10 @@ instalallave() {
 #Entra la dirección de dónde está el paquete de este momento, solo para referencia. Determina el paquete actual en el servidor, con la última 
 directorio=$(dirname $1)
 #~ archivo=$(curl -L $directorio| grep _all.deb| cut -d\" -f2)
-archivo=$(curl -L $directorio| tr "\"" "\n"| grep _all.deb$ |tail -n1)
+archivoremoto=$(curl -L $directorio| tr "\"" "\n"| grep _all.deb$ |tail -n1)
 
-sudo wget -Nc -P /var/cache/apt/archives/ $directorio/$archivo
-sudo dpkg -i /var/cache/apt/archives/$archivo
+sudo wget -Nc -P /var/cache/apt/archives/ $directorio/$archivoremoto
+sudo dpkg -i /var/cache/apt/archives/$archivoremoto
 }
 
 desactivarepos(){
@@ -35,15 +35,12 @@ FALSE "0- Desactivar todos los repositorios anteriores"
 TRUE Estable \
 TRUE Testing \
 TRUE Sid \
-FALSE Lxqt \
 TRUE Liquorix \
 TRUE "Sparky y Siduction" \
 TRUE Multimedia \
+FALSE Lxqt \
 TRUE Iceweasel \
 TRUE LMDE \
-FALSE Cantv \
-FALSE Cantv2 \
-FALSE Velug \
 FALSE Virtualbox \
 FALSE Google \
 FALSE Opera \
@@ -51,6 +48,11 @@ FALSE JOSM \
 FALSE "Cairo Dock" \
 FALSE PlayOnLinux \
 --print-all| sed -r 's/([A-Z]+\|[[:alpha:]]+)\|([A-Z]+\|[[:alpha:]]+)\|/\1\n\2/' | grep TRUE | cut -f2 -d\|`
+
+#No usados, por el momento
+#FALSE Cantv \
+#FALSE Cantv2 \
+#FALSE Velug \
 
 #Se pudieran borrar los listados descargados
 #sudo find /var/cache/apt/ -type f -exec rm -v {} \;
