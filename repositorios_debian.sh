@@ -39,7 +39,6 @@ TRUE Liquorix \
 TRUE "Sparky y Siduction" \
 TRUE Multimedia \
 FALSE Lxqt \
-TRUE Iceweasel \
 TRUE LMDE \
 FALSE Virtualbox \
 FALSE Google \
@@ -53,6 +52,7 @@ FALSE PlayOnLinux \
 #FALSE Cantv \
 #FALSE Cantv2 \
 #FALSE Velug \
+#TRUE Iceweasel \
 
 #Se pudieran borrar los listados descargados
 #sudo find /var/cache/apt/ -type f -exec rm -v {} \;
@@ -266,7 +266,7 @@ instalallave http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/de
 fi
 
 if [[ $elegidos == *Iceweasel* ]]; then
-echo "mozilla.debian.net"
+echo "mozilla.debian.net (Se deja de usar al Debian haber absorbido FF)"
 echo "deb http://mozilla.debian.net/ jessie-backports iceweasel-release
 #deb http://http.debian.net/debian experimental main"|sudo tee /etc/apt/sources.list.d/mozilla.list
 instalallave http://mozilla.debian.net/pkg-mozilla-archive-keyring_1.1_all.deb 
