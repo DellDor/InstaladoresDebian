@@ -31,7 +31,7 @@ done
 }
 
 elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
-FALSE "0- Desactivar todos los repositorios anteriores"
+FALSE "0- Desactivar todos los repositorios anteriores" \
 TRUE Estable \
 TRUE Testing \
 TRUE Sid \
@@ -328,7 +328,7 @@ deb http://dl.google.com/linux/chrome/deb/ stable main
 #deb http://dl.google.com/linux/musicmanager/deb/ stable main
 
 ##Google remote Desktop
-#deb http://dl.google.com/linux/chrome-remote-desktop/deb/ stable main
+deb http://dl.google.com/linux/chrome-remote-desktop/deb/ stable main
 "|sudo tee /etc/apt/sources.list.d/google.list
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A040830F7FAC5991
 fi
@@ -342,7 +342,6 @@ if ! sudo gpg --list-public-keys | grep 4096R/A8492E35 > /dev/null; then
 wget -O- https://deb.opera.com/archive.key | sudo apt-key add -
 fi
 fi
-
 ################
 ################
 ################
@@ -350,18 +349,15 @@ echo 'Acquire::Check-Valid-Until "false";' | sudo tee /etc/apt/apt.conf.d/80upda
 
 if $(yad --center --image "dialog-question" --title "Listado de repositorios" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar listado de repositorios?"); then
 sudo apt-get update
-#~ x-terminal-emulator -e 
 fi
 if $(yad --center --image "dialog-question" --title "Actualizaciones de seguridad" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones de seguridad?"); then
 #~ x-terminal-emulator -e  
 LANG=C sudo aptitude install --visual-preview $(apt-get upgrade -s | grep -i security| awk '/^Inst/ { print $2 }')
 fi
 if $(yad --center --image "dialog-question" --title "Actualizaciones seguras" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones seguras, sin borrar nada?"); then
-#~ x-terminal-emulator -e 
 sudo aptitude safe-upgrade --visual-preview
 fi
 if $(yad --center --image "dialog-question" --title "Actualizaciones sin descargas" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar lo que ya esté en la caché?"); then
-#~ x-terminal-emulator -e 
 sudo bash -c "apt-get upgrade -s |grep 'Inst '| cut -d' ' -f2| grep -v -e ^lib[a-q] -e ^lib[s-z] -e ^libr[a-d] -e ^libr[f-z] -e ^libre[a-n] -e ^libre[p-z]|xargs -l1 apt-get install --no-download --no-remove"
 fi
 if $(yad --center --image "dialog-question" --title "Actualizaciones una a una" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar uno a uno los paquetes faltantes?"); then
