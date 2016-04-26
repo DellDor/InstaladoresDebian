@@ -8,6 +8,7 @@
 #HACER: Probar y copiar esquema de prueba de claves presentes de Opera. Paras los tipo paquetes, puede hacerse revisando la versión instalada o como en goo docs sobre pychemp-qt . Proceder solo si es distinta a la requerida.
 #HACER: Definir procedimiento que se repite con llamada desde cada uno de los if.
 #HACER: Si no está presente, instalar yad desde http://sparkylinux.org/repo/pool/main/y/yad/ según la arquitectura.
+#HACER: Añadir, apagado, repositorio unestable de Debian
 
 #Guión de descarga movido a https://github.com/DellDor/aliasbash/.bash_aliases_debian.sh
 
@@ -139,12 +140,12 @@ echo "deb http://httpredir.debian.org/debian sid main contrib non-free
 #deb http://security.debian.org/ sid/updates main contrib non-free
 #deb-src http://security.debian.org/ sid/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/sid.list
 
-echo "Package: *  
+echo "Package: *
 Pin: release o=Debian,a=experimental
 Pin-Priority: 1
 " | sudo tee /etc/apt/preferences.d/experimental-pin
 
-echo "Package: *  
+echo "Package: *
 Pin: release a=unstable
 Pin-Priority: 150
 " | sudo tee /etc/apt/preferences.d/sid-pin
@@ -290,7 +291,6 @@ deb http://mirror.lug.udel.edu/pub/siduction/extra unstable main contrib non-fre
 deb http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free
 #deb-src http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free"|sudo tee /etc/apt/sources.list.d/sparky.list
 wget -O - http://sparkylinux.org/repo/sparkylinux.gpg.key | sudo apt-key add -
-
 if ! sudo gpg --list-public-keys | grep 4096R/45C45076 > /dev/null; then
 sudo apt-key adv --keyserver pgpkeys.mit.edu --recv-key 15CBD88045C45076
 fi
