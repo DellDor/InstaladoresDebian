@@ -38,8 +38,8 @@ TRUE Sid \
 TRUE Liquorix \
 TRUE "Sparky y Siduction" \
 TRUE Multimedia \
+FALSE LMDE \
 FALSE Lxqt \
-TRUE LMDE \
 FALSE Virtualbox \
 FALSE Google \
 FALSE Opera \
@@ -83,23 +83,23 @@ deb http://security.debian.org/ stable/updates main contrib non-free
 
 instalallave http://debian.uniminuto.edu/pool/main/d/debian-archive-keyring/?C=M;O=A/paquete
 
-echo "Package: *                    
+echo "Package: *  
 Pin: release a=jessie-backports
 Pin-Priority: 700
 
-Package: *                    
+Package: *  
 Pin: release l=Debian-Security
 Pin-Priority: 750
 
-Package: *                    
+Package: *  
 Pin: release l=Debian Backports
 Pin-Priority: 740
 
-Package: *                    
+Package: *  
 Pin: release a=stable-updates
 Pin-Priority: 730
 
-Package: *                    
+Package: *  
 Pin: release a=proposed-updates
 Pin-Priority: 650
 " | sudo tee /etc/apt/preferences.d/stable-pin
@@ -117,11 +117,11 @@ deb http://httpredir.debian.org/debian testing-updates main contrib non-free
 deb http://security.debian.org/ testing/updates main contrib non-free
 #deb-src http://security.debian.org/ testing/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/testing.list
 
-echo "Package: *                    
+echo "Package: *  
 Pin: release a=testing-updates
 Pin-Priority: 750
 
-Package: *                    
+Package: *  
 Pin: release a=testing
 Pin-Priority: 740
 "| sudo tee /etc/apt/preferences.d/testing-pin
@@ -139,12 +139,12 @@ echo "deb http://httpredir.debian.org/debian sid main contrib non-free
 #deb http://security.debian.org/ sid/updates main contrib non-free
 #deb-src http://security.debian.org/ sid/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/sid.list
 
-echo "Package: *                    
+echo "Package: *  
 Pin: release o=Debian,a=experimental
 Pin-Priority: 1
 " | sudo tee /etc/apt/preferences.d/experimental-pin
 
-echo "Package: *                    
+echo "Package: *  
 Pin: release a=unstable
 Pin-Priority: 150
 " | sudo tee /etc/apt/preferences.d/sid-pin
@@ -233,7 +233,7 @@ deb http://packages.siduction.org/lxqt experimental main
 if ! sudo gpg --list-public-keys | grep 4096R/45C45076 > /dev/null; then
 sudo apt-key adv --keyserver pgpkeys.mit.edu --recv-key 15CBD88045C45076
 fi
-echo "Package: *                    
+echo "Package: *  
 Pin: release o=lxqt
 Pin-Priority: 1001
 " | sudo tee /etc/apt/preferences.d/lxqt-pin
@@ -242,7 +242,7 @@ fi
 if [[ $elegidos == *Liquorix* ]]; then
 echo "deb http://liquorix.net/debian sid main past future"|sudo tee /etc/apt/sources.list.d/liquorix.list
 
-echo "Package: linux-*                    
+echo "Package: linux-*  
 Pin: release o=liquorix
 Pin-Priority: 1001
 " | sudo tee /etc/apt/preferences.d/liquorix-pin
@@ -285,7 +285,7 @@ http://forum.siduction.org/index.php?page=download-mirrors-en"
 echo "deb http://sparkylinux.org/repo testing main
 #deb http://sparkylinux.org/repo unstable main
 
-deb http://mirror.lug.udel.edu/pub/siduction/extra unstable main
+deb http://mirror.lug.udel.edu/pub/siduction/extra unstable main contrib non-free
 #deb-src http://mirror.lug.udel.edu/pub/siduction/extra unstable main
 deb http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free
 #deb-src http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free"|sudo tee /etc/apt/sources.list.d/sparky.list
@@ -295,7 +295,7 @@ if ! sudo gpg --list-public-keys | grep 4096R/45C45076 > /dev/null; then
 sudo apt-key adv --keyserver pgpkeys.mit.edu --recv-key 15CBD88045C45076
 fi
 
-echo "Package: *                    
+echo "Package: *  
 Pin: release o=SparkyLinux
 Pin-Priority: 1001
 " | sudo tee /etc/apt/preferences.d/sparky-pin
@@ -342,7 +342,6 @@ if ! sudo gpg --list-public-keys | grep 4096R/A8492E35 > /dev/null; then
 wget -O- https://deb.opera.com/archive.key | sudo apt-key add -
 fi
 fi
-################
 ################
 ################
 echo 'Acquire::Check-Valid-Until "false";' | sudo tee /etc/apt/apt.conf.d/80update-caduco
