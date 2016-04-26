@@ -365,7 +365,9 @@ if $(yad --center --image "dialog-question" --title "Actualizaciones una a una" 
 aptitude search ~U -F %p|xargs -i sudo apt-get install -q "{}"
 fi
 
+if $(yad --center --image "dialog-question" --title "Eliminar repetidos" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea eliminar paquetes repetidos?"); then
 #HACER: Revisar si está instalado fdupes y fslint-gui
 sudo fdupes -n -R /var/cache/apt{-cacher-ng,-cacher-ng/_import,}/ |grep -e .deb$|grep archives/|xargs rm -v
 sudo fdupes -n -R /var/cache/apt{-cacher-ng,-cacher-ng/_import,}/ |grep -e .deb$|grep _import/|xargs rm -v
 sudo fslint-gui /var/cache/{apt,apt-cacher-ng}
+fi
