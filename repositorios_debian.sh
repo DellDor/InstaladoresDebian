@@ -85,7 +85,7 @@ instalallave http://debian.uniminuto.edu/pool/main/d/debian-archive-keyring/?C=M
 
 echo "Package: *                    
 Pin: release a=jessie-backports
-Pin-Priority: 650
+Pin-Priority: 700
 
 Package: *                    
 Pin: release l=Debian-Security
@@ -93,11 +93,11 @@ Pin-Priority: 750
 
 Package: *                    
 Pin: release l=Debian Backports
-Pin-Priority: 750
+Pin-Priority: 740
 
 Package: *                    
 Pin: release a=stable-updates
-Pin-Priority: 750
+Pin-Priority: 730
 
 Package: *                    
 Pin: release a=proposed-updates
@@ -133,10 +133,10 @@ echo "httpredir.debian.org"
 echo "deb http://httpredir.debian.org/debian sid main contrib non-free
 #deb-src http://httpredir.debian.org/debian sid main contrib non-free
 
-deb http://httpredir.debian.org/debian sid-updates main contrib non-free
+#No disponible al momento:
+#deb http://httpredir.debian.org/debian sid-updates main contrib non-free
 #deb-src http://httpredir.debian.org/debian sid-updates main contrib non-free
-
-deb http://security.debian.org/ sid/updates main contrib non-free
+#deb http://security.debian.org/ sid/updates main contrib non-free
 #deb-src http://security.debian.org/ sid/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/sid.list
 
 echo "Package: *                    
