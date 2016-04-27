@@ -31,7 +31,7 @@ elif [[ $(echo $directorio)"x" = ".x" ]]; then
 echo "
 $1 es una clave directa"
 key=$1
-echo -e "Procesando clave: $key \n"; gpg --keyserver subkeys.pgp.net --keyserver-options timeout=10 --recv $key || gpg --keyserver pgpkeys.mit.edu --keyserver-options timeout=10 --recv $key || gpg --keyserver  keyserver.ubuntu.com --keyserver-options timeout=10 --recv $key && gpg --export --armor $key | sudo apt-key add -
+echo -e "Procesando clave: $key \n"; gpg --keyserver subkeys.pgp.net --keyserver-options timeout=10 --recv $key || gpg --keyserver pgpkeys.mit.edu --keyserver-options timeout=10 --recv $key || gpg --keyserver keyserver.ubuntu.com --keyserver-options timeout=10 --recv $key && gpg --export --armor $key | sudo apt-key add -
 else
 #Si es un archivo de clave
 echo "
@@ -285,8 +285,7 @@ deb http://www.deb-multimedia.org stable-backports main #non-free
 deb http://www.deb-multimedia.org testing main non-free
 deb http://www.deb-multimedia.org oldstable main non-free
 deb http://www.deb-multimedia.org sid main non-free" |sudo tee /etc/apt/sources.list.d/multimedia.list
-
-instalallave http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_246246016.3.7_all.deb
+instalallave http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_246246016.3.7_all.deb 65558117
 fi
 
 if [[ $elegidos == *Iceweasel* ]]; then
@@ -301,6 +300,7 @@ echo "LMDE Betsy http://community.linuxmint.com/tutorial/view/201"
 echo "deb http://packages.linuxmint.com betsy main upstream import #backport
 deb http://extra.linuxmint.com betsy main #upstream import backport"|sudo tee /etc/apt/sources.list.d/betsy.list
 instalallave http://packages.linuxmint.com/pool/main/l/linuxmint-keyring/linuxmint-keyring_2009.04.29_all.deb
+#HACER: buscar llave de LMDE
 fi
 
 if [[ $elegidos == *Sparky* ]]; then
@@ -313,11 +313,12 @@ deb http://mirror.lug.udel.edu/pub/siduction/extra unstable main contrib non-fre
 #deb-src http://mirror.lug.udel.edu/pub/siduction/extra unstable main
 deb http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free
 #deb-src http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free"|sudo tee /etc/apt/sources.list.d/sparky.list
-wget -O - http://sparkylinux.org/repo/sparkylinux.gpg.key | sudo apt-key add -
-if ! sudo gpg --list-public-keys | grep 4096R/45C45076 > /dev/null; then
-sudo apt-key adv --keyserver pgpkeys.mit.edu --recv-key 15CBD88045C45076
-fi
-
+instalallave http://sparkylinux.org/repo/sparkylinux.gpg.key D117204E
+instalallave 15CBD88045C45076 45C45076
+#wget -O - http://sparkylinux.org/repo/sparkylinux.gpg.key | sudo apt-key add -
+#if ! sudo gpg --list-public-keys | grep 4096R/45C45076 > /dev/null; then
+#sudo apt-key adv --keyserver pgpkeys.mit.edu --recv-key 15CBD88045C45076
+#fi
 echo "Package: *  
 Pin: release o=SparkyLinux
 Pin-Priority: 1001
@@ -332,12 +333,11 @@ fi
 if [[ $elegidos == *PlayOnLinux* ]]; then
 echo "https://www.playonlinux.com/en/download.html"
 sudo wget http://deb.playonlinux.com/playonlinux_wheezy.list -O /etc/apt/sources.list.d/playonlinux.list
-if ! sudo gpg --list-public-keys | grep 1024D/C4676186 > /dev/null; then
-wget "http://deb.playonlinux.com/public.gpg" -O- | sudo apt-key add -
-fi
+instalallave http://deb.playonlinux.com/public.gpg C4676186 
 fi
 
 if [[ $elegidos == *Google* ]]; then
+echo "https://www.google.com/linuxrepositories/"
 echo "## Google-chrome web browser
 deb http://dl.google.com/linux/chrome/deb/ stable main
 
@@ -353,7 +353,7 @@ deb http://dl.google.com/linux/chrome/deb/ stable main
 ##Google remote Desktop
 deb http://dl.google.com/linux/chrome-remote-desktop/deb/ stable main
 "|sudo tee /etc/apt/sources.list.d/google.list
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A040830F7FAC5991
+instalallave A040830F7FAC5991 7FAC5991
 fi
 
 if [[ $elegidos == *Opera* ]]; then
@@ -361,9 +361,10 @@ echo "## Opera web browser
 deb http://deb.opera.com/opera/ stable non-free
 deb http://deb.opera.com/opera/ testing non-free
 deb http://deb.opera.com/opera/ unstable non-free"|sudo tee /etc/apt/sources.list.d/opera.list
-if ! sudo gpg --list-public-keys | grep 4096R/A8492E35 > /dev/null; then
-wget -O- https://deb.opera.com/archive.key | sudo apt-key add -
-fi
+instalallave https://deb.opera.com/archive.key A8492E35
+#if ! sudo gpg --list-public-keys | grep 4096R/A8492E35 > /dev/null; then
+#wget -O- https://deb.opera.com/archive.key | sudo apt-key add -
+#fi
 fi
 ################
 ################
