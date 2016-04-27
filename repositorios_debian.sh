@@ -13,14 +13,35 @@
 #Guión de descarga movido a https://github.com/DellDor/aliasbash/.bash_aliases_debian.sh
 
 instalallave() {
-#Busca, descarga e instala el paquete indicado. Para keyring.
-#Entra la dirección de dónde está el paquete de este momento, solo para referencia. Determina el paquete actual en el servidor, con la última 
+#Busca, descarga e la clave del repositorio, según sea el origen
+#Primer parámetro: dirección completa de paquete .deb, nombre largo de la clave o dirección completa de archivo de clave
+#Segundo parámetro: segunda parte o id completo de clave entre comillas (por el /) resultado de apt-key list (preferiblemente la primera de los pares).
 directorio=$(dirname $1)
-#~ archivo=$(curl -L $directorio| grep _all.deb| cut -d\" -f2)
+archivo=$(basename $1)
+if [[ $(apt-key list|grep "$2")"x" = "x" ]]; then
+#Si es un archivo .deb
+if [[ ! $(echo $archivo|grep .deb$)"x" = "x" ]]; then
+echo "
+$1 es un paquete Debian"
 archivoremoto=$(curl -L $directorio| tr "\"" "\n"| grep _all.deb$ |tail -n1)
-
 sudo wget -Nc -P /var/cache/apt/archives/ $directorio/$archivoremoto
 sudo dpkg -i /var/cache/apt/archives/$archivoremoto
+#Si es una clave directa
+elif [[ $(echo $directorio)"x" = ".x" ]]; then
+echo "
+$1 es una clave directa"
+key=$1
+echo -e "Procesando clave: $key \n"; gpg --keyserver subkeys.pgp.net --keyserver-options timeout=10 --recv $key || gpg --keyserver pgpkeys.mit.edu --keyserver-options timeout=10 --recv $key || gpg --keyserver  keyserver.ubuntu.com --keyserver-options timeout=10 --recv $key && gpg --export --armor $key | sudo apt-key add -
+else
+#Si es un archivo de clave
+echo "
+$1i es un archivo de clave"
+wget -c "$1" -O- | sudo apt-key add -
+fi
+else
+echo "
+$1 ya está instalada"
+fi
 }
 
 desactivarepos(){
@@ -82,7 +103,7 @@ deb http://httpredir.debian.org/debian jessie-backports main contrib non-free
 deb http://security.debian.org/ stable/updates main contrib non-free
 #deb-src http://security.debian.org/ stable/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/stable.list
 
-instalallave http://debian.uniminuto.edu/pool/main/d/debian-archive-keyring/?C=M;O=A/paquete
+instalallave http://debian.uniminuto.edu/pool/main/d/debian-archive-keyring/?C=M;O=A/paquete.deb 2B90D010
 
 echo "Package: *  
 Pin: release a=jessie-backports
@@ -231,9 +252,10 @@ deb http://packages.siduction.org/lxqt unstable main
 
 deb http://packages.siduction.org/lxqt experimental main
 #deb-src http://packages.siduction.org/lxqt experimental main"|sudo tee /etc/apt/sources.list.d/lxqt.list
-if ! sudo gpg --list-public-keys | grep 4096R/45C45076 > /dev/null; then
-sudo apt-key adv --keyserver pgpkeys.mit.edu --recv-key 15CBD88045C45076
-fi
+instalallave 15CBD88045C45076 45C45076
+#if ! sudo gpg --list-public-keys | grep 4096R/45C45076 > /dev/null; then
+#sudo apt-key adv --keyserver pgpkeys.mit.edu --recv-key 15CBD88045C45076
+#fi
 echo "Package: *  
 Pin: release o=lxqt
 Pin-Priority: 1001
@@ -251,7 +273,8 @@ fi
 
 if [[ $elegidos == *JOSM* ]]; then
 echo "deb https://josm.openstreetmap.de/apt alldist universe"|sudo tee /etc/apt/sources.list.d/josm.list
-wget -c https://josm.openstreetmap.de/josm-apt.key -O- | sudo apt-key add -
+instalallave https://josm.openstreetmap.de/josm-apt.key 78FC0F87
+#wget -c https://josm.openstreetmap.de/josm-apt.key -O- | sudo apt-key add -
 fi
 
 if [[ $elegidos == *Multimedia* ]]; then
