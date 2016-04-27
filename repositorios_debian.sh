@@ -16,6 +16,8 @@ instalallave() {
 #Busca, descarga e la clave del repositorio, según sea el origen
 #Primer parámetro: dirección completa de paquete .deb, nombre largo de la clave o dirección completa de archivo de clave
 #Segundo parámetro: segunda parte o id completo de clave entre comillas (por el /) resultado de apt-key list (preferiblemente la primera de los pares).
+
+#HACER: cambiar la lógica para que si no hay parámetro 2, se ejecute. Puede ser contando parámetros
 directorio=$(dirname $1)
 archivo=$(basename $1)
 if [[ $(apt-key list|grep "$2")"x" = "x" ]]; then
