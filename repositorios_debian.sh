@@ -311,9 +311,11 @@ http://forum.siduction.org/index.php?page=download-mirrors-en"
 echo "deb http://sparkylinux.org/repo testing main
 #deb http://sparkylinux.org/repo unstable main
 
-deb http://mirror.lug.udel.edu/pub/siduction/extra unstable main contrib non-free
+deb http://www.las.ic.unicamp.br/pub/siduction/extra unstable main contrib non-free
+#deb http://mirror.lug.udel.edu/pub/siduction/extra unstable main contrib non-free
 #deb-src http://mirror.lug.udel.edu/pub/siduction/extra unstable main
-deb http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free
+#deb http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free
+deb http://www.las.ic.unicamp.br/pub/siduction/fixes unstable main contrib non-free
 #deb-src http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free"|sudo tee /etc/apt/sources.list.d/sparky.list
 instalallave http://sparkylinux.org/repo/sparkylinux.gpg.key D117204E
 instalallave 15CBD88045C45076 45C45076
