@@ -153,7 +153,7 @@ fi
 
 #if [[ $elegidos == *Sid* ]]; then
 if echo $elegidos|grep -w "Sid" > /dev/null; then
-echo "httpredir.debian.org"
+echo "httpredir.debian.org https://wiki.debian.org/DebianExperimental"
 echo "deb http://httpredir.debian.org/debian sid main contrib non-free
 #deb-src http://httpredir.debian.org/debian sid main contrib non-free
 
@@ -161,7 +161,10 @@ echo "deb http://httpredir.debian.org/debian sid main contrib non-free
 #deb http://httpredir.debian.org/debian sid-updates main contrib non-free
 #deb-src http://httpredir.debian.org/debian sid-updates main contrib non-free
 #deb http://security.debian.org/ sid/updates main contrib non-free
-#deb-src http://security.debian.org/ sid/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/sid.list
+#deb-src http://security.debian.org/ sid/updates main contrib non-free
+
+deb http://httpredir.debian.org/debian experimental main
+"|sudo tee /etc/apt/sources.list.d/sid.list
 
 echo "Package: *
 Pin: release o=Debian,a=experimental
