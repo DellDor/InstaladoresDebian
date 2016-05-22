@@ -1,35 +1,46 @@
 #!/bin/bash
 #Implementación de lo establecido en:
 #http://wiki.flightgear.org/Building_FlightGear_-_Debian
+#Más detalles en http://wiki.flightgear.org/Scripted_Compilation_on_Linux_Debian/Ubuntu
 #Mejorado con ideas de:
 #https://sourceforge.net/p/flightgear/fgmeta/ci/next/tree/download_and_compile.sh#l21
 
-#Menciona algunas alternativas en dependencias: http://wiki.flightgear.org/Talk:Scripted_Compilation_on_Linux_Debian/Ubuntu
-
 #Se deben desinstalar de repositorio los paquetes a instalar
+previos(){
+#~ version=$(git ls-remote --heads git://git.code.sf.net/p/flightgear/flightgear|grep '\/release\/'|cut -f4 -d'/'|sort -t . -k 1,1n -k2,2n -k3,3n|tail -1)
+version=2016.1 && version2=2
+#Subversión (donde aplique):
+version2=1
+export FG_INSTALL_DIR=/usr/local/games/flightg
+export FG_SRC_DIR=/var/tmp/FGsrc
+mkdir -p $FG_SRC_DIR
+nucleos=3
+}
+
+#Menciona algunas alternativas en dependencias: http://wiki.flightgear.org/Talk:Scripted_Compilation_on_Linux_Debian/Ubuntu
 
 #HACER: Crear variable booleana para deterinar si es git o no y poner todo en función de ello.
 #HACER: crear variable con la versión correspondiente.
 #HACER: añadir menú al inicio con yad para los distintos pasos. Se pudiera separar descargadatos en otra terminal independiente. 
-#HACER: revisar si las dependencias están instaladas antes de proceder con instalarlas. 
-version=$(git ls-remote --heads git://git.code.sf.net/p/flightgear/flightgear|grep '\/release\/'|cut -f4 -d'/'|sort -t . -k 1,1n -k2,2n -k3,3n|tail -1)
-#~ version=2016.1
-#Subversión (donde aplique):
-version2=1
-export FG_INSTALL_DIR=/usr/local/games/FG-$version
-export FG_SRC_DIR=/var/tmp/FGsrc
-mkdir -p $FG_SRC_DIR
+#HACER: revisar si las dependencias están instaladas antes de proceder con instalarlas.
+
+#MEJORA: usar nproc --all para ver la cantidad de nucleos y usar n-1 en la compilación (j)
+#Mejora: revisar http://wiki.flightgear.org/FlightGear_configuration_via_XML que hablan de la configuración predeterminada
+#Mejora: Empaquetar en lugar de guión. Revisar https://community.linuxmint.com/tutorial/view/162 básicamente es usar sudo checkinstall en lugar del make install. Seguir https://www.debian.org/doc/manuals/maint-guide/index.es.html revisabdo https://www.debian.org/doc/manuals/maint-guide/build.es.html#git-buildpackage
 
 lapausa(){
-read -p "Pulsa Enter para seguir con " a
+read -p "
+Pulsa Enter para seguir con $1." a
 }
 
 0eliminaprevio(){
+lapausa "eliminar FG de repositorio"
 sudo aptitude remove fgo fgrun flightgear flightgear-data-{ai,aircrafts,all,base,models} libplib1
 }
 
 1dependencias(){
-	#MEJORA: Hacer metapaquete con dependenciasm choques y recomendaciones. En las dependencias debe ir paralelos los que pueden serlo.
+lapausa "instalar dependencias para compilar"
+#MEJORA: Hacer metapaquete con dependenciasm choques y recomendaciones. En las dependencias debe ir paralelos los que pueden serlo.
 #~ sudo apt-get update
 #~ sudo rm /var/lib/apt/lists/*
 
@@ -41,7 +52,13 @@ sudo aptitude install $paquetes
 paquetes="freeglut3-dev libboost-dev libcurl4-openssl-dev  libdbus-1-dev libfltk1.3-dev libgtkglext1-dev libjpeg62-turbo-dev libopenal-dev libopenscenegraph-dev librsvg2-dev libxml2-dev"
 
 #Adicionales:
-paquetes="$paquetes libudev-dev qt5-default libqt5opengl5-dev"
+#Para Fgrun
+paquetes="$paquetes fluid"
+
+paquetes="$paquetes libudev-dev"
+
+#Para launcher experimental Qt5 (fgfs --launcher en http://wiki.flightgear.org/FlightGear_Qt_launcher)
+paquetes="$paquetes qt5-default libqt5opengl5-dev"
 
 sudo aptitude install $paquetes #--visual-preview
  
@@ -52,13 +69,14 @@ sudo aptitude install $paquetes #--visual-preview
 }
 
 Ninstaladatos() {
+lapausa "descargar datos desde sourceforge ~1,5 Gb"
 #Datos 2016.1(1.3 Gb):
 # axel -an3 
 #~ aria2c -c -k1M -x3 -d $FG_SRC_DIR https://sourceforge.net/projects/flightgear/files/release-$version/FlightGear-$version.$version2-data.tar.bz2/download && \
 tar vxjf $FG_SRC_DIR/FlightGear-$version.$version2-data.tar.bz2 -C $FG_SRC_DIR && \
 
 sudo mkdir -p $FG_INSTALL_DIR && sudo rsync --remove-source-files -a -v $FG_SRC_DIR/fgdata $FG_INSTALL_DIR
- find $FG_SRC_DIR/fgdata -empty -delete
+find $FG_SRC_DIR/fgdata -empty -delete
 
 #Datos (Git)
 #~ cd $FG_INSTALL_DIR
@@ -66,6 +84,7 @@ sudo mkdir -p $FG_INSTALL_DIR && sudo rsync --remove-source-files -a -v $FG_SRC_
 }
 
 2instalaplib() {
+lapausa "la compilación e instalación de plib"
 #plib
 cd $FG_SRC_DIR
 svn co https://svn.code.sf.net/p/plib/code/trunk plib.svn
@@ -73,10 +92,11 @@ cd plib.svn
 sed s/PLIB_TINY_VERSION\ \ 5/PLIB_TINY_VERSION\ \ 6/ -i src/util/ul.h
 ./autogen.sh
 ./configure --prefix=$FG_INSTALL_DIR
-make -j2 && sudo make install
+make -j $nucleos && sudo make install
 }
 
 3instalasimgear(){
+lapausa "la compilación e instalación de SimGear"
 #SimGear
 cd $FG_SRC_DIR
 git clone git://git.code.sf.net/p/flightgear/simgear simgear.git
@@ -87,10 +107,12 @@ git checkout release/$version
 #2016 y git
 mkdir $FG_SRC_DIR/build-sg; cd $FG_SRC_DIR/build-sg
 cmake -D CMAKE_INSTALL_PREFIX:PATH="$FG_INSTALL_DIR" $FG_SRC_DIR/simgear.git
-make -j2 && sudo make install
+make -j $nucleos && sudo make install
 }
 
 4instalafligtgear(){
+lapausa "la compilación e instalación de FlightGear"
+
 #Flightgear
 cd $FG_SRC_DIR
 git clone git://git.code.sf.net/p/flightgear/flightgear flightgear.git
@@ -100,10 +122,11 @@ git checkout release/$version
 
 mkdir $FG_SRC_DIR/build-fg; cd $FG_SRC_DIR/build-fg
 cmake -D CMAKE_INSTALL_PREFIX:PATH="$FG_INSTALL_DIR" $FG_SRC_DIR/flightgear.git
-make -j2 && sudo make install
+make -j $nucleos && sudo make install
 }
 
 5pruebaflightgear(){
+lapausa "la prueba de FG"
 #Prueba final:
 export LD_LIBRARY_PATH=$FG_INSTALL_DIR/lib/:$LD_LIBRARY_PATH
 $FG_INSTALL_DIR/bin/fgfs --fg-root=$FG_INSTALL_DIR/fgdata
@@ -117,8 +140,8 @@ fi
 }
 
 6instalafgrun(){
+lapausa "la compilación e instalación de fgrun"
 #Fgrun
-sudo aptitude install fluid
 cd $FG_SRC_DIR
 git clone git://git.code.sf.net/p/flightgear/fgrun fgrun.git
 #2016.1
@@ -126,13 +149,57 @@ cd fgrun.git
 git checkout release/$version
 mkdir $FG_SRC_DIR/build-fgrun; cd $FG_SRC_DIR/build-fgrun
 cmake -D CMAKE_INSTALL_PREFIX:PATH="$FG_INSTALL_DIR" $FG_SRC_DIR/fgrun.git
-make -j2 && sudo make install
+make -j $nucleos && sudo make install
+}
+
+6reconfigurafgrun() {
+zcat $FG_INSTALL_DIR/fgdata/Airports/metar.dat.gz > ~/.fltk/flightgear.org/fgrun/airports.txt
+
+cat << FDA > ${HOME}/.fltk/flightgear.org/fgrun.prefs
+; FLTK preferences file format 1.0
+; vendor: flightgear.org
+; application: fgrun. Copiado por Delldor
+
+[.]
+
+fg_exe_init:
+fg_exe:$FG_INSTALL_DIR/bin/fgfs
+fg_aircraft_init:
+fg_aircraft:${HOME}/.fgfs/Aircraft/Aeronaves:${HOME}/.fgfs/Aircraft/org.
++flightgear.official/Aircraft
+fg_root:$FG_INSTALL_DIR/fgdata
+fg_scenery:$FG_INSTALL_DIR/fgdata/Scenery
+runway:<por defecto>
+horizon_effect:1
+enhanced_lighting:1
+clouds3d:1
+specular_highlight:1
+random_objects:1
+time_of_day_value:noon
+time_of_day:1
+random_trees:1
+ai_models:1
+ai_traffic:1
+terrasync:1
+fetch_real_weather:1
+show_cmd_line:1
+show_console:1
+FDA
+#~ http://wiki.flightgear.org/FlightGear_Launch_Control
 }
 
 7pruebafgrun() {
-#Probar Fgrun:
+lapausa "la prueba de Fgrun"
 export LD_LIBRARY_PATH=$FG_INSTALL_DIR/lib/:$LD_LIBRARY_PATH
 $FG_INSTALL_DIR/bin/fgrun
+
+#Si todo bien, se puede cambiar:
+read -p "¿Se ejecutó bien? (s/n)" a
+if [ "$a" = "s" ]; then
+echo "Activando /bin/fgrun"
+sudo ln -s $FG_INSTALL_DIR/bin/fgrun /bin/fgrun
+fi
+
 
 #HACER: automatizar la ubicación de lo sigueinte en ~/.fltk/flightgear.org/fgrun.prefs
 
@@ -153,25 +220,23 @@ $FG_INSTALL_DIR/bin/fgrun
 }
 
 desinstala(){
-sudo rm -vri /bin/fgfs
+sudo rm -vri /bin/fg{fs,run}
 sudo rm -rv $FG_INSTALL_DIR
 rm -rv $HOME/.{fgfs,fltk/flightgear.org,fgo}
 }
 
 principal(){
+previos
 0eliminaprevio
 1dependencias
-#~ Ninstaladatos
-#~ lapausa
+Ninstaladatos
+lapausa
 2instalaplib
-lapausa
 3instalasimgear
-lapausa
 4instalafligtgear
-lapausa
 5pruebaflightgear
-lapausa
 6instalafgrun
+6reconfigurafgrun
 7pruebafgrun
 }
 
