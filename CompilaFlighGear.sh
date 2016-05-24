@@ -6,9 +6,9 @@
 #https://sourceforge.net/p/flightgear/fgmeta/ci/next/tree/download_and_compile.sh#l21
 
 #Se deben desinstalar de repositorio los paquetes a instalar
-previos(){
-#~ version=$(git ls-remote --heads git://git.code.sf.net/p/flightgear/flightgear|grep '\/release\/'|cut -f4 -d'/'|sort -t . -k 1,1n -k2,2n -k3,3n|tail -1)
-version=2016.1 && version2=2
+parametros(){
+version=$(git ls-remote --heads git://git.code.sf.net/p/flightgear/flightgear|grep '\/release\/'|cut -f4 -d'/'|sort -t . -k 1,1n -k2,2n -k3,3n|tail -1)
+#~ version=2016.1 && version2=2
 #Subversión (donde aplique):
 version2=1
 export FG_INSTALL_DIR=/usr/local/games/flightg
@@ -19,13 +19,12 @@ nucleos=3
 
 #Menciona algunas alternativas en dependencias: http://wiki.flightgear.org/Talk:Scripted_Compilation_on_Linux_Debian/Ubuntu
 
-#HACER: Crear variable booleana para deterinar si es git o no y poner todo en función de ello.
-#HACER: crear variable con la versión correspondiente.
-#HACER: añadir menú al inicio con yad para los distintos pasos. Se pudiera separar descargadatos en otra terminal independiente. 
-#HACER: revisar si las dependencias están instaladas antes de proceder con instalarlas.
-
-#MEJORA: usar nproc --all para ver la cantidad de nucleos y usar n-1 en la compilación (j)
-#Mejora: revisar http://wiki.flightgear.org/FlightGear_configuration_via_XML que hablan de la configuración predeterminada
+#HACER: Emplear íconos en $FG_SRC_DIR/flightgear.git/icons para accesos directos y elementos del menú
+#MEJORA: Crear variable booleana para deterinar si es git o no y poner todo en función de ello.
+#MEJORA: añadir menú al inicio con yad para los distintos pasos. Se pudiera separar descargadatos en otra terminal independiente. 
+#MEJORA: revisar si las dependencias están instaladas antes de proceder con instalarlas.
+#HACER: usar nproc --all para ver la cantidad de nucleos y usar n-1 en la compilación (j)
+#MEJORA: revisar http://wiki.flightgear.org/FlightGear_configuration_via_XML que hablan de la configuración predeterminada
 #Mejora: Empaquetar en lugar de guión. Revisar https://community.linuxmint.com/tutorial/view/162 básicamente es usar sudo checkinstall en lugar del make install. Seguir https://www.debian.org/doc/manuals/maint-guide/index.es.html revisabdo https://www.debian.org/doc/manuals/maint-guide/build.es.html#git-buildpackage
 
 lapausa(){
@@ -72,11 +71,10 @@ Ninstaladatos() {
 lapausa "descargar datos desde sourceforge ~1,5 Gb"
 #Datos 2016.1(1.3 Gb):
 # axel -an3 
-#~ aria2c -c -k1M -x3 -d $FG_SRC_DIR https://sourceforge.net/projects/flightgear/files/release-$version/FlightGear-$version.$version2-data.tar.bz2/download && \
+aria2c -c -k1M -x3 -d $FG_SRC_DIR https://sourceforge.net/projects/flightgear/files/release-$version/FlightGear-$version.$version2-data.tar.bz2/download && echo -e "\n\nInicia descompresión" && \
 tar vxjf $FG_SRC_DIR/FlightGear-$version.$version2-data.tar.bz2 -C $FG_SRC_DIR && \
-
-sudo mkdir -p $FG_INSTALL_DIR && sudo rsync --remove-source-files -a -v $FG_SRC_DIR/fgdata $FG_INSTALL_DIR
-find $FG_SRC_DIR/fgdata -empty -delete
+sudo mkdir -p $FG_INSTALL_DIR && echo "\n\nInicia copiado" && sudo rsync --remove-source-files -a -v $FG_SRC_DIR/fgdata $FG_INSTALL_DIR
+find $FG_SRC_DIR -empty -delete
 
 #Datos (Git)
 #~ cd $FG_INSTALL_DIR
@@ -135,7 +133,7 @@ $FG_INSTALL_DIR/bin/fgfs --fg-root=$FG_INSTALL_DIR/fgdata
 read -p "¿Se ejecutó bien? (s/n)" a
 if [ "$a" = "s" ]; then
 echo "Activando /bin/fgfs"
-sudo ln -s $FG_INSTALL_DIR/bin/fgfs /bin/fgfs
+sudo ln -fs $FG_INSTALL_DIR/bin/fgfs /bin/fgfs
 fi
 }
 
@@ -169,6 +167,7 @@ fg_aircraft:${HOME}/.fgfs/Aircraft/Aeronaves:${HOME}/.fgfs/Aircraft/org.
 +flightgear.official/Aircraft
 fg_root:$FG_INSTALL_DIR/fgdata
 fg_scenery:$FG_INSTALL_DIR/fgdata/Scenery
+show_3d_preview:0
 runway:<por defecto>
 horizon_effect:1
 enhanced_lighting:1
@@ -197,26 +196,8 @@ $FG_INSTALL_DIR/bin/fgrun
 read -p "¿Se ejecutó bien? (s/n)" a
 if [ "$a" = "s" ]; then
 echo "Activando /bin/fgrun"
-sudo ln -s $FG_INSTALL_DIR/bin/fgrun /bin/fgrun
+sudo ln -fs $FG_INSTALL_DIR/bin/fgrun /bin/fgrun
 fi
-
-
-#HACER: automatizar la ubicación de lo sigueinte en ~/.fltk/flightgear.org/fgrun.prefs
-
-#Binario:
-#~ /usr/local/games/FG-2016.2/bin/fgfs
-
-#Inicio (Datos):
-#~ /usr/local/games/FG-2016.2/fgdata
-
-#Aviones:
-#~/usr/local/games/FG-2016.2/fgdata/Aircraft
-
-#Escenario:
-#~ /usr/local/games/FG-2016.2/fgdata/Scenery/
-
-#Cache aeropuertos:
-#~ ~/.fltk/flightgear.org/fgrun/airports.txt
 }
 
 desinstala(){
@@ -226,11 +207,10 @@ rm -rv $HOME/.{fgfs,fltk/flightgear.org,fgo}
 }
 
 principal(){
-previos
+parametros
 0eliminaprevio
 1dependencias
 Ninstaladatos
-lapausa
 2instalaplib
 3instalasimgear
 4instalafligtgear
