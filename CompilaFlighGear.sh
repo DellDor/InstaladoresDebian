@@ -200,6 +200,12 @@ sudo ln -fs $FG_INSTALL_DIR/bin/fgrun /bin/fgrun
 fi
 }
 
+8finales(){
+if [ $(read -p "Pulse s para borrar las carpetas de compilación " a; echo $a) = "s" ]; then
+sudo rm -rv $FG_SRC_DIR/build-*
+fi
+}
+
 desinstala(){
 sudo rm -vri /bin/fg{fs,run}
 sudo rm -rv $FG_INSTALL_DIR
@@ -218,6 +224,7 @@ Ninstaladatos
 6instalafgrun
 6reconfigurafgrun
 7pruebafgrun
+8finales
 }
 
 principal
