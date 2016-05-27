@@ -1,11 +1,12 @@
 #!/bin/bash
 #Implementación de lo establecido en:
 #http://wiki.flightgear.org/Building_FlightGear_-_Debian
+#Usa: git aria2
+
 #Más detalles en http://wiki.flightgear.org/Scripted_Compilation_on_Linux_Debian/Ubuntu
-#Mejorado con ideas de:
+#Se puede mejorar revisando:
 #https://sourceforge.net/p/flightgear/fgmeta/ci/next/tree/download_and_compile.sh#l21
 
-#Se deben desinstalar de repositorio los paquetes a instalar
 parametros(){
 version=$(git ls-remote --heads git://git.code.sf.net/p/flightgear/flightgear|grep '\/release\/'|cut -f4 -d'/'|sort -t . -k 1,1n -k2,2n -k3,3n|tail -1)
 #~ version=2016.1 && version2=2
@@ -33,6 +34,7 @@ Pulsa Enter para seguir con $1." a
 }
 
 0eliminaprevio(){
+#Se deben desinstalar de repositorio los paquetes a instalar
 lapausa "eliminar FG de repositorio"
 sudo aptitude remove fgo fgrun flightgear flightgear-data-{ai,aircrafts,all,base,models} libplib1
 }
@@ -67,7 +69,7 @@ sudo aptitude install $paquetes #--visual-preview
 #~ done
 }
 
-Ninstaladatos() {
+Ainstaladatos() {
 lapausa "descargar datos desde sourceforge ~1,5 Gb"
 #Datos 2016.1(1.3 Gb):
 # axel -an3 
@@ -156,7 +158,7 @@ zcat $FG_INSTALL_DIR/fgdata/Airports/metar.dat.gz > ~/.fltk/flightgear.org/fgrun
 cat << FDA > ${HOME}/.fltk/flightgear.org/fgrun.prefs
 ; FLTK preferences file format 1.0
 ; vendor: flightgear.org
-; application: fgrun. Copiado por Delldor
+; application: fgrun. Modificado por Delldor
 
 [.]
 
@@ -167,6 +169,7 @@ fg_aircraft:${HOME}/.fgfs/Aircraft/Aeronaves:${HOME}/.fgfs/Aircraft/org.
 +flightgear.official/Aircraft
 fg_root:$FG_INSTALL_DIR/fgdata
 fg_scenery:$FG_INSTALL_DIR/fgdata/Scenery
+fg_scenery:${HOME}/.fgfs/terraGIT:${FG_INSTALL_DIR}/fgdata/Scenery
 show_3d_preview:0
 runway:<por defecto>
 horizon_effect:1
@@ -212,11 +215,51 @@ sudo rm -rv $FG_INSTALL_DIR
 rm -rv $HOME/.{fgfs,fltk/flightgear.org,fgo}
 }
 
+9terragear(){
+#http://wiki.flightgear.org/TerraGear
+#http://wiki.flightgear.org/Building_TerraGear_in_Ubuntu_910_%2832-_or_64-bit%29#Automatic_Installation
+
+wget -cP $FG_SRC_DIR http://clement.delhamaide.free.fr/download_and_compile_tg.sh
+#~ mv -v $FG_SRC_DIR/download_and_compile.sh\?format\=raw $FG_SRC_DIR/download_and_compile.sh
+chmod 755 $FG_SRC_DIR/download_and_compile.sh
+$FG_SRC_DIR/download_and_compile.sh SIMGEAR TERRAGEAR
+}
+
+Baeronaves(){
+#Hacer:Descomprimir y ubicar en lugar correcto.
+#Mejora: Manejar con un mensaje si sale con error. Ejemplo: 13 ya existe el archivo.
+#HACER: un instalador gráfico con yad
+aria2c -c -k1M -x3 -d $FG_SRC_DIR --allow-overwrite=false --auto-file-renaming=false https://github.com/FGMEMBERS/JPack/archive/master.zip
+
+if [ $(read -p "¿Quiere instalar el A320Neo? (s para proceder) " a; echo $a) = "s" ]; then
+aria2c -c -k1M -x3 -d $FG_SRC_DIR --allow-overwrite=false --auto-file-renaming=false https://codeload.github.com/FGMEMBERS/A320neo/zip/master
+fi
+
+if [ $(read -p "¿Quiere instalar la familia CRJ700/900/1000? (s para proceder) " a; echo $a) = "s" ]; then
+aria2c -c -k1M -x3 -d $FG_SRC_DIR --allow-overwrite=false --auto-file-renaming=false https://codeload.github.com/FGMEMBERS-NONGPL/CRJ700-family/zip/master
+fi
+}
+
+CterraGit(){
+#Foro oficial http://thejabberwocky.net/viewforum.php?f=51
+mkdir -p ~/.fgfs
+cd ~/.fgfs
+#La clonación crea el directorio terraGIT automáticamente y descarga 400 Mb en objetos base
+git config color.ui true
+git clone https://github.com/FGMEMBERS-TERRAGIT/terraGIT || cd terraGIT && git pull 
+#~ cd terraGIT
+}
+
+C1Caribe(){
+~/.fgfs/terraGIT/install/tile w070n10
+}
+
 principal(){
 parametros
+
 0eliminaprevio
 1dependencias
-Ninstaladatos
+Ainstaladatos
 2instalaplib
 3instalasimgear
 4instalafligtgear
@@ -225,6 +268,12 @@ Ninstaladatos
 6reconfigurafgrun
 7pruebafgrun
 8finales
+
+Baeronaves
+
+CterraGit
+C1Caribe
+
 }
 
 principal
