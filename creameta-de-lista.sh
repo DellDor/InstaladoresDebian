@@ -2,6 +2,12 @@
 #Crea metapaquete desde listados de paquetes publicados en la red.
 #Para ser llamado desde otro guión con la información de la fuente.
 
+#Usa las siguientes variables exportadas de otro guión:
+#export servidor="http://sourceforge.net/projects/sparkylinux/files"
+#export sector="mate" 
+#export version="4.2-i586"
+#export descargar="$servidor/$sector/sparkylinux-$version-$sector.iso.package-list.txt"
+
 #~ TODO:Corregir los errores que plantea Lintian
 #~ E: delldor.sparky.mate-4.2-i586: debian-changelog-file-missing
 #~ E: delldor.sparky.mate-4.2-i586: no-copyright-file
