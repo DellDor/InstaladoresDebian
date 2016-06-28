@@ -2,8 +2,9 @@
 #~ TODO: si ya está instalado Peazip, ofrecer desinstalarlo primero
 #~ Si ya está instalada la dependencia, no buscar descargarla ni instalarla
 
+#La depencia parece no ser necesaria en junio 2016
+dependencia(){
 cd /tmp
-
 paquete="peazip"
 servidor="https://packages.debian.org/squeeze/i386/libgmp3c2/download"
 
@@ -13,6 +14,7 @@ paque=$(cat $tempo| head -n1)
 wget -c $paque && sudo cp -vu `basename $paque` /var/cache/apt/archives
 
 sudo gdebi-gtk `basename $paque`
+}
 
 ###############################
 
@@ -32,14 +34,15 @@ servidor="https://github.com/"
 
 #~ Para GTK
 paque=$(grep -E "*.GTK2-2_i386.deb" $tempo|tail -n1)
-
+destino=/var/tmp
 echo "
 
 ##################### 
 A descargar:
-$servidor/$paque"
+$servidor/$paque
+en $destino"
 
-wget -c $servidor/$paque && sudo cp -vu `basename $paque` /var/cache/apt/archives
+wget -P$destino -c $servidor/$paque #&& sudo cp -vu `basename $paque` /var/cache/apt/archives
 
 sudo gdebi-gtk `basename $paque`
 
