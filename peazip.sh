@@ -1,8 +1,10 @@
 #!/bin/bash
-#~ TODO: si ya está instalado Peazip, ofrecer desinstalarlo primero
-#~ Si ya está instalada la dependencia, no buscar descargarla ni instalarla
+#Descarga e instala la última versión de Peazip para GTK en i386.
+#Requiere wget, gdebi-gtk
 
-#La depencia parece no ser necesaria en junio 2016
+#~ HACER: si ya está instalado Peazip, ofrecer desinstalarlo primero
+
+#La depencia parece no ser necesaria en junio 2016, por lo que se desactiva
 dependencia(){
 cd /tmp
 paquete="peazip"
@@ -16,34 +18,37 @@ wget -c $paque && sudo cp -vu `basename $paque` /var/cache/apt/archives
 sudo gdebi-gtk `basename $paque`
 }
 
+#~dependencia
 ###############################
 
-paquete="peazip"
 servidor="https://github.com/giorgiotani/PeaZip/releases/"
 
-tempo=$(mktemp)
-#~ Descarga lista de paquetes disponibles en ese servidor
+#Para QT
+#~modo=Qt
 
-wget -qO- $servidor|sed -n 's/.*href="\([^"]*\).*/\1/p'|grep .deb$ |sort > $tempo
-cat $tempo
+#Para GTK
+modo=GTK2
 
-servidor="https://github.com/"
+if [ $(uname -m) == 'i686' ]; then
+plataforma=i386
+else
+plataforma=all
+fi
 
-#~ Para QT
-#~ paque=$(grep -E "*.Qt-2_i386.deb" $tempo|tail -n1)
+paque=$(wget -qO- $servidor|sed -n 's/.*href="\([^"]*\).*/\1/p'|grep -E "*.$modo-2_$plataforma.deb"|sort|tail -n1)
 
-#~ Para GTK
-paque=$(grep -E "*.GTK2-2_i386.deb" $tempo|tail -n1)
 destino=/var/tmp
+
 echo "
 
 ##################### 
 A descargar:
-$servidor/$paque
+https://github.com/$paque
 en $destino"
 
-wget -P$destino -c $servidor/$paque #&& sudo cp -vu `basename $paque` /var/cache/apt/archives
+wget -P$destino -c https://github.com/$paque
+#~&& sudo cp -vu `basename $paque` /var/cache/apt/archives
 
-sudo gdebi-gtk `basename $paque`
+sudo gdebi-gtk $destino/`basename $paque`
 
 read -p "Listo"
