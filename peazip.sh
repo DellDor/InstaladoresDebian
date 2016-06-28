@@ -1,5 +1,8 @@
 #!/bin/bash
 #Descarga e instala la última versión de Peazip para GTK en i386.
+
+#wget -N -P/tmp https://github.com/DellDor/InstaladoresDebian/raw/master/peazip.sh && chmod a+x /tmp/peazip.sh && . /tmp/peazip.sh
+
 #Requiere wget, gdebi-gtk
 
 #~ HACER: si ya está instalado Peazip, ofrecer desinstalarlo primero
