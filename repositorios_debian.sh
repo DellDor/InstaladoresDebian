@@ -59,41 +59,8 @@ sudo rm -v /var/lib/apt/lists/*
 }
 
 elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
-FALSE "00- Borrar listados viejos
-0- Desactivar todos los repositorios anteriores" \
-TRUE Estable \
-TRUE Testing \
-TRUE Sid \
-TRUE Liquorix \
-TRUE "Sparky y Siduction" \
-TRUE Multimedia \
-FALSE LMDE \
-FALSE Lxqt \
-FALSE Virtualbox \
-FALSE Google \
-FALSE Opera \
-FALSE JOSM \
-FALSE "Cairo Dock" \
-FALSE PlayOnLinux \
---print-all| sed -r 's/([A-Z]+\|[[:alpha:]]+)\|([A-Z]+\|[[:alpha:]]+)\|/\1\n\2/' | grep TRUE | cut -f2 -d\|`
-
-#No usados, por el momento
-#FALSE Cantv \
-#FALSE Cantv2 \
-#FALSE Velug \
-#TRUE Iceweasel \
-
-#Se pudieran borrar los listados descargados
-#sudo find /var/cache/apt/ -type f -exec rm -v {} \;
-#sudo find /var/lib/apt/lists/ -type f -exec rm -v {} \;
-
-#Elimina listados antiguos
-#sudo find /var/lib/apt/lists/ -type f -exec rm -v {} \;
-
-if [[ $elegidos == 00-* ]]; then
-borralistas
-fi
-
+FALSE "00- Borrar listados viejos" \
+FA
 if [[ $elegidos == 0-* ]]; then
 desactivarepos
 fi
@@ -138,7 +105,6 @@ Pin-Priority: 650
 " | sudo tee /etc/apt/preferences.d/stable-pin
 fi
 
-#if [[ $elegidos == *Testing* ]]; then
 if echo $elegidos|grep -w "Testing" > /dev/null; then
 echo "httpredir.debian.org"mu
 echo "deb http://httpredir.debian.org/debian testing main contrib non-free
@@ -160,7 +126,6 @@ Pin-Priority: 740
 "| sudo tee /etc/apt/preferences.d/testing-pin
 fi
 
-#if [[ $elegidos == *Sid* ]]; then
 if echo $elegidos|grep -w "Sid" > /dev/null; then
 echo "httpredir.debian.org https://wiki.debian.org/DebianExperimental"
 echo "deb http://httpredir.debian.org/debian sid main contrib non-free
@@ -186,7 +151,6 @@ Pin-Priority: 150
 " | sudo tee /etc/apt/preferences.d/sid-pin
 fi
 
-#if [[ $elegidos == *Cantv* ]]; then
 if echo $elegidos|grep -w "Cantv" > /dev/null; then
 echo "debian.cantv.net"
 echo "####Stable
@@ -205,7 +169,6 @@ deb http://debian.cantv.net/debian testing-proposed-updates main contrib non-fre
 #deb http://debian.cantv.net/debian/debian-security/ testing/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/cantv.list
 fi
 
-#if [[ $elegidos == *Cantv2* ]]; then
 if echo $elegidos|grep -w "Cantv2" > /dev/null; then
 echo "mirror-01.cantv.net"
 echo "####Stable
@@ -225,7 +188,6 @@ deb http://mirror-01.cantv.net/debian testing-proposed-updates main contrib non-
 "|sudo tee /etc/apt/sources.list.d/cantv2.list
 fi
  
-#if [[ $elegidos == *Velug* ]]; then
 if echo $elegidos|grep -w "Velug" > /dev/null; then
 echo "debian.velug.org.ve"
 echo "####Stable
@@ -245,14 +207,12 @@ deb http://debian.velug.org.ve/debian testing-proposed-updates main contrib non-
 "|sudo tee /etc/apt/sources.list.d/velug.list
 fi
 
-#if [[ $elegidos == *Cairo* ]]; then
 if echo $elegidos|grep -w "Cairo" > /dev/null; then
 echo "tuxfamily.org/glxdock"
 echo "deb http://download.tuxfamily.org/glxdock/repository/debian testing cairo-dock
 "|sudo tee /etc/apt/sources.list.d/cairo-dock.list
 fi
 
-#if [[ $elegidos == *Lxqt* ]]; then
 if echo $elegidos|grep -w "Lxqt" > /dev/null; then
 echo "Siduction"
 echo "deb http://packages.siduction.org/lxqt jessie-backports main
@@ -388,6 +348,11 @@ echo 'Acquire::Check-Valid-Until "false";' | sudo tee /etc/apt/apt.conf.d/80upda
 
 if $(yad --center --image "dialog-question" --title "Listado de repositorios" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea actualizar listado de repositorios?"); then
 sudo apt-get update
+fi
+if $(yad --center --image "dialog-question" --title "Continuar con actualizaciones" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea continuar actualizando paquetes?"); then
+echo "Continuamos"
+else
+exit 0
 fi
 if $(yad --center --image "dialog-question" --title "Actualizaciones de seguridad" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones de seguridad?"); then
 #~ x-terminal-emulator -e  
