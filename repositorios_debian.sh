@@ -60,7 +60,7 @@ sudo rm -v /var/lib/apt/lists/*
 
 elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
 FALSE "00- Borrar listados viejos" \
-0- "Desactivar todos los repositorios anteriores" \
+FALSE "0- Desactivar todos los repositorios anteriores" \
 TRUE Estable \
 TRUE Testing \
 TRUE Sid \
@@ -296,7 +296,7 @@ instalallave http://mozilla.debian.net/pkg-mozilla-archive-keyring_1.1_all.deb
 fi
 
 if [[ $elegidos == *LMDE* ]]; then
-echo "LMDE Betsy http://community.linuxmint.com/tutorial/view/201"
+echo "LMDE Betsy http://community.linuxmint.com/tutorial/view/2013"
 echo "deb http://packages.linuxmint.com betsy main upstream import #backport
 deb http://extra.linuxmint.com betsy main #upstream import backport"|sudo tee /etc/apt/sources.list.d/betsy.list
 instalallave http://packages.linuxmint.com/pool/main/l/linuxmint-keyring/linuxmint-keyring_2009.04.29_all.deb
@@ -378,7 +378,7 @@ fi
 if $(yad --center --image "dialog-question" --title "Continuar con actualizaciones" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea continuar actualizando paquetes?"); then
 echo "Continuamos"
 else
-exit 0
+return 0
 fi
 if $(yad --center --image "dialog-question" --title "Actualizaciones de seguridad" --button=gtk-yes:0 --button=gtk-no:1 --text "¿Desea hacer las actualizaciones de seguridad?"); then
 #~ x-terminal-emulator -e  
