@@ -54,8 +54,13 @@ awk '{print "#"$0}' ${i}|sudo tee ${i}
 done
 }
 
+borralistas(){
+sudo rm -v /var/lib/apt/lists/*
+}
+
 elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
-FALSE "0- Desactivar todos los repositorios anteriores" \
+FALSE "00- Borrar listados viejos
+0- Desactivar todos los repositorios anteriores" \
 TRUE Estable \
 TRUE Testing \
 TRUE Sid \
@@ -84,6 +89,10 @@ FALSE PlayOnLinux \
 
 #Elimina listados antiguos
 #sudo find /var/lib/apt/lists/ -type f -exec rm -v {} \;
+
+if [[ $elegidos == 00-* ]]; then
+borralistas
+fi
 
 if [[ $elegidos == 0-* ]]; then
 desactivarepos
