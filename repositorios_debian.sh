@@ -60,7 +60,33 @@ sudo rm -v /var/lib/apt/lists/*
 
 elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
 FALSE "00- Borrar listados viejos" \
-FA
+0- "Desactivar todos los repositorios anteriores" \
+TRUE Estable \
+TRUE Testing \
+TRUE Sid \
+TRUE Liquorix \
+TRUE "Sparky y Siduction" \
+TRUE Multimedia \
+FALSE LMDE \
+FALSE Lxqt \
+FALSE Virtualbox \
+FALSE Google \
+FALSE Opera \
+FALSE JOSM \
+FALSE "Cairo Dock" \
+FALSE PlayOnLinux \
+---print-all| sed -r 's/([A-Z]+\|[[:alpha:]]+)\|([A-Z]+\|[[:alpha:]]+)\|/\1\n\2/' | grep TRUE | cut -f2 -d\|`
+
+#No usados, por el momento
+#FALSE Cantv \
+#FALSE Cantv2 \
+#FALSE Velug \
+#TRUE Iceweasel \
+
+if [[ $elegidos == 00-* ]]; then
+borralistas
+fi
+
 if [[ $elegidos == 0-* ]]; then
 desactivarepos
 fi
