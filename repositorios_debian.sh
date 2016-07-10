@@ -298,8 +298,7 @@ if [[ $elegidos == *LMDE* ]]; then
 echo "LMDE Betsy http://community.linuxmint.com/tutorial/view/2013"
 echo "deb http://packages.linuxmint.com betsy main upstream import #backport
 deb http://extra.linuxmint.com betsy main #upstream import backport"|sudo tee /etc/apt/sources.list.d/betsy.list
-instalallave http://packages.linuxmint.com/pool/main/l/linuxmint-keyring/linuxmint-keyring_2009.04.29_all.deb
-#HACER: buscar llave de LMDE
+instalallave http://packages.linuxmint.com/pool/main/l/linuxmint-keyring/linuxmint-keyring_2016.05.26_all.deb
 fi
 
 if [[ $elegidos == *Sparky* ]]; then
