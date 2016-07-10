@@ -58,7 +58,7 @@ borralistas(){
 sudo rm -v /var/lib/apt/lists/*
 }
 
-elegidos=`yad --center --height 600 --width 300 --list --checklist --column=Activar --column "Repositorio" \
+elegidos=`yad --center --height 450 --width 450 --list --checklist --column=Activar --column "Repositorio" ---print-all \
 FALSE "00- Borrar listados viejos" \
 FALSE "0- Desactivar todos los repositorios anteriores" \
 TRUE Estable \
@@ -74,8 +74,7 @@ FALSE Google \
 FALSE Opera \
 FALSE JOSM \
 FALSE "Cairo Dock" \
-FALSE PlayOnLinux \
----print-all| sed -r 's/([A-Z]+\|[[:alpha:]]+)\|([A-Z]+\|[[:alpha:]]+)\|/\1\n\2/' | grep TRUE | cut -f2 -d\|`
+FALSE PlayOnLinux| sed -r 's/([A-Z]+\|[[:alpha:]]+)\|([A-Z]+\|[[:alpha:]]+)\|/\1\n\2/' | grep TRUE | cut -f2 -d\|`
 
 #No usados, por el momento
 #FALSE Cantv \
