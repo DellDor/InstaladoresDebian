@@ -50,6 +50,7 @@ paquetes="automake cmake g++ gcc git make sed subversion"
 sudo aptitude install $paquetes
 
 #Depenencias:
+#Luego de compilado debe permanecer libopenscenegraph-dev
 paquetes="freeglut3-dev libboost-dev libcurl4-openssl-dev  libdbus-1-dev libfltk1.3-dev libgtkglext1-dev libjpeg62-turbo-dev libopenal-dev libopenscenegraph-dev librsvg2-dev libxml2-dev"
 
 #Adicionales:
@@ -61,7 +62,7 @@ paquetes="$paquetes libudev-dev"
 #Para launcher experimental Qt5 (fgfs --launcher en http://wiki.flightgear.org/FlightGear_Qt_launcher)
 paquetes="$paquetes qt5-default libqt5opengl5-dev"
 
-sudo aptitude install $paquetes #--visual-preview
+sudo aptitude install $paquetes --visual-preview
  
 #~ for i in $(echo $paquetes); do
 #~ sudo aptitude install --visual-preview $i
@@ -100,14 +101,24 @@ lapausa "la compilación e instalación de SimGear"
 #SimGear
 cd $FG_SRC_DIR
 git clone git://git.code.sf.net/p/flightgear/simgear simgear.git
-#Solo 2016.1
+#~ echo "cosa $?"
+if [ "$?" .gt. "0" ]; then
+
+echo "actualizando"
 cd simgear.git
-git checkout release/$version
+git pull
+fi
+#~ git checkout
+echo "cosa $?"
+#~ 
+#Solo 2016.n
+#~ cd simgear.git
+#~ git checkout release/$version
 
 #2016 y git
-mkdir $FG_SRC_DIR/build-sg; cd $FG_SRC_DIR/build-sg
-cmake -D CMAKE_INSTALL_PREFIX:PATH="$FG_INSTALL_DIR" $FG_SRC_DIR/simgear.git
-make -j $nucleos && sudo make install
+#~ mkdir $FG_SRC_DIR/build-sg; cd $FG_SRC_DIR/build-sg
+#~ cmake -D CMAKE_INSTALL_PREFIX:PATH="$FG_INSTALL_DIR" $FG_SRC_DIR/simgear.git
+#~ make -j $nucleos && sudo make install
 }
 
 4instalafligtgear(){
@@ -238,6 +249,15 @@ fi
 if [ $(read -p "¿Quiere instalar la familia CRJ700/900/1000? (s para proceder) " a; echo $a) = "s" ]; then
 aria2c -c -k1M -x3 -d $FG_SRC_DIR --allow-overwrite=false --auto-file-renaming=false https://codeload.github.com/FGMEMBERS-NONGPL/CRJ700-family/zip/master
 fi
+
+if [ $(read -p "¿Quiere instalar la familia Embrae rE? (s para proceder) " a; echo $a) = "s" ]; then
+aria2c -c -k1M -x3 -d $FG_SRC_DIR --allow-overwrite=false --auto-file-renaming=false https://codeload.github.com/FGMEMBERS/E-jet-family/zip/master
+fi
+
+if [ $(read -p "¿Quiere instalar al 747-8? (s para proceder) " a; echo $a) = "s" ]; then
+aria2c -c -k1M -x3 -d $FG_SRC_DIR --allow-overwrite=false --auto-file-renaming=false https://codeload.github.com/FGMEMBERS/747-8i/zip/master
+fi
+
 }
 
 CterraGit(){
@@ -257,7 +277,7 @@ C1Caribe(){
 principal(){
 parametros
 
-0eliminaprevio
+#~ 0eliminaprevio
 1dependencias
 Ainstaladatos
 2instalaplib
@@ -269,11 +289,10 @@ Ainstaladatos
 7pruebafgrun
 8finales
 
-Baeronaves
+#~ Baeronaves
 
-CterraGit
-C1Caribe
-
+#~ CterraGit
+#~ C1Caribe
 }
 
 principal
