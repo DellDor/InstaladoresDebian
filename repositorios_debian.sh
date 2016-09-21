@@ -64,6 +64,7 @@ FALSE "0- Desactivar todos los repositorios anteriores" \
 TRUE Estable \
 TRUE Testing \
 TRUE Sid \
+FALSE Cantv \
 TRUE Liquorix \
 TRUE "Sparky y Siduction" \
 TRUE Multimedia \
@@ -131,7 +132,7 @@ Pin-Priority: 650
 fi
 
 if echo $elegidos|grep -w "Testing" > /dev/null; then
-echo "httpredir.debian.org"mu
+echo "httpredir.debian.org"
 echo "deb http://httpredir.debian.org/debian testing main contrib non-free
 #deb-src http://httpredir.debian.org/debian testing main contrib non-free
 
@@ -176,7 +177,7 @@ Pin-Priority: 150
 " | sudo tee /etc/apt/preferences.d/sid-pin
 fi
 
-if echo $elegidos|grep -w "Cantv" > /dev/null; then
+if echo $elegidos|grep -w "Cantv2" > /dev/null; then
 echo "debian.cantv.net"
 echo "####Stable
 deb http://debian.cantv.net/debian stable main contrib non-free
@@ -194,7 +195,7 @@ deb http://debian.cantv.net/debian testing-proposed-updates main contrib non-fre
 #deb http://debian.cantv.net/debian/debian-security/ testing/updates main contrib non-free"|sudo tee /etc/apt/sources.list.d/cantv.list
 fi
 
-if echo $elegidos|grep -w "Cantv2" > /dev/null; then
+if echo $elegidos|grep -w "Cantv" > /dev/null; then
 echo "mirror-01.cantv.net"
 echo "####Stable
 deb http://mirror-01.cantv.net/debian stable main contrib non-free
@@ -210,7 +211,50 @@ deb http://mirror-01.cantv.net/debian testing-proposed-updates main contrib non-
 ####Debian-security
 #deb http://mirror-01.cantv.net/debian/debian-security/ stable/updates main contrib non-free
 #deb http://mirror-01.cantv.net/debian/debian-security/ testing/updates main contrib non-free
-"|sudo tee /etc/apt/sources.list.d/cantv2.list
+
+####Experimental
+deb http://mirror-01.cantv.net/debian experimental main contrib non-free
+"|sudo tee /etc/apt/sources.list.d/cantv.list
+
+echo "Package: *  
+Pin: release a=testing-updates
+Pin-Priority: 750
+
+Package: *  
+Pin: release a=testing
+Pin-Priority: 740
+"| sudo tee /etc/apt/preferences.d/testing-pin
+
+echo "Package: *  
+Pin: release a=jessie-backports
+Pin-Priority: 700
+
+Package: *  
+Pin: release l=Debian-Security
+Pin-Priority: 750
+
+Package: *  
+Pin: release l=Debian Backports
+Pin-Priority: 740
+
+Package: *  
+Pin: release a=stable-updates
+Pin-Priority: 730
+
+Package: *  
+Pin: release a=proposed-updates
+Pin-Priority: 650
+" | sudo tee /etc/apt/preferences.d/stable-pin
+
+echo "Package: *
+Pin: release o=Debian,a=experimental
+Pin-Priority: 1
+" | sudo tee /etc/apt/preferences.d/experimental-pin
+
+echo "Package: *
+Pin: release a=unstable
+Pin-Priority: 150
+" | sudo tee /etc/apt/preferences.d/sid-pin
 fi
  
 if echo $elegidos|grep -w "Velug" > /dev/null; then
