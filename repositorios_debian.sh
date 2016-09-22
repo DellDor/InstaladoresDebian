@@ -212,6 +212,9 @@ deb http://mirror-01.cantv.net/debian testing-proposed-updates main contrib non-
 #deb http://mirror-01.cantv.net/debian/debian-security/ stable/updates main contrib non-free
 #deb http://mirror-01.cantv.net/debian/debian-security/ testing/updates main contrib non-free
 
+####Sid
+deb http://mirror-01.cantv.net/debian sid main contrib non-free
+
 ####Experimental
 deb http://mirror-01.cantv.net/debian experimental main contrib non-free
 "|sudo tee /etc/apt/sources.list.d/cantv.list
@@ -306,12 +309,16 @@ Pin-Priority: 1001
 fi
 
 if [[ $elegidos == *Liquorix* ]]; then
+echo "https://liquorix.net/#sources
+apt install '^liquorix-([^-]+-)?keyring.?'"
 echo "deb http://liquorix.net/debian sid main past future"|sudo tee /etc/apt/sources.list.d/liquorix.list
 
 echo "Package: linux-*  
 Pin: release o=liquorix
 Pin-Priority: 1001
 " | sudo tee /etc/apt/preferences.d/liquorix-pin
+instalallave https://liquorix.net/debian/pool/main/l/liquorix-keyring/liquorix-keyring_2016.03.19_all.deb
+instalallave https://liquorix.net/debian/pool/main/l/liquorix-keyring/liquorix-keyrings_2016.03.19_all.deb
 fi
 
 if [[ $elegidos == *JOSM* ]]; then
@@ -351,11 +358,9 @@ http://forum.siduction.org/index.php?page=download-mirrors-en"
 echo "deb http://sparkylinux.org/repo testing main
 #deb http://sparkylinux.org/repo unstable main
 
-deb http://www.las.ic.unicamp.br/pub/siduction/extra unstable main contrib non-free
-#deb http://mirror.lug.udel.edu/pub/siduction/extra unstable main contrib non-free
+deb http://mirror.lug.udel.edu/pub/siduction/extra unstable main
 #deb-src http://mirror.lug.udel.edu/pub/siduction/extra unstable main
-#deb http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free
-deb http://www.las.ic.unicamp.br/pub/siduction/fixes unstable main contrib non-free
+deb http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free
 #deb-src http://mirror.lug.udel.edu/pub/siduction/fixes unstable main contrib non-free"|sudo tee /etc/apt/sources.list.d/sparky.list
 instalallave http://sparkylinux.org/repo/sparkylinux.gpg.key D117204E
 instalallave 15CBD88045C45076 45C45076
