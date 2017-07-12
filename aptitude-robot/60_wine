@@ -1,0 +1,16 @@
++ mtools
++ ntfs-3g
++ wine32
++ winetricks
++ cabextract
+#+ wine
++ wine-staging
++ wine-binfmt
++ winbind
++ winetricks
+#+ gextractwinicons
+#+ icoutils
++ gnome-exe-thumbnailer
++ playonlinux
++ libgl1-mesa-dri:i386
++ fatattr

@@ -1,0 +1,7 @@
+#Rippeador a Mp3 (GUI GTK)
+#+ asunder
+
++ lame
++ ffmpeg
++ vlc
++ lximage

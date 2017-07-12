@@ -1,0 +1,7 @@
++ rfkill
++ htop
++ acpi
++ hdparm
++ lm-sensors
++ mesa-utils
++ gparted
