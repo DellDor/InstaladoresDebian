@@ -1,0 +1,14 @@
++ hplip
+#+ cups
+
+#Opcional para ipstat
++ cups-client
+
++ simple-scan
++ tesseract-ocr
++ tesseract-ocr-spa
+
++ lios
+#+ ocrfeeder
+#+ yagf
++ gscan2pdf
