@@ -1,9 +1,0 @@
-+ aptitude
-+ apt-utils
-+ apt-transport-https
-+ dpkg-dev
-+ dpkg
-+ gdebi
-+ gtkorphan
-+ aptitude-robot
-#+ snapd
