@@ -1,9 +1,0 @@
-#Rippeador a Mp3 (GUI GTK)
-#+ asunder
-
-+ lame
-+ ffmpeg
-+ vlc
-
-+ x265
-+ gstreamer1.0-fluendo-mp3
