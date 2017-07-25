@@ -14,3 +14,5 @@
 + playonlinux
 + libgl1-mesa-dri:i386
 + fatattr
+
+#~ + msitool

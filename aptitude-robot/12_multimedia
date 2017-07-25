@@ -4,4 +4,6 @@
 + lame
 + ffmpeg
 + vlc
-+ lximage
+
++ x265
++ gstreamer1.0-fluendo-mp3

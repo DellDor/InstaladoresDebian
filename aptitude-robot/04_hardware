@@ -5,3 +5,6 @@
 + lm-sensors
 + mesa-utils
 + gparted
+
+- ntp
+- openntp
