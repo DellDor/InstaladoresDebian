@@ -1,0 +1,4 @@
+#Para ser llamado a instalar con:
+#sudo pip3 install -U -r /etc/aptitude-robot/pkglist.d/pychemqt.pip3
+pudb
+iapws

@@ -1,2 +1,2 @@
-#Para ser llamado a instalar con: sudo pip3 install -r python3.pip3
+#Para ser llamado a instalar con: sudo pip3 install -U -r python3.pip3
 youtube-dl

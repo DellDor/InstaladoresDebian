@@ -1,0 +1,34 @@
+#+ design-desktop-animation
+
+#Grabador de escritorio
+#+ vokoscreen
+
+#2d y 3d
+#+ librecad
++ blender
++ freecad
+
+#Editor de video
++ openshot-qt
+
+#Partituras
++ musescore
++ timgm6mb-soundfont
+
+#Gráficos vectoriales
++ inkscape
++ libwmf-bin
++ python-scour
+
++ synfigstudio
++ synfig-examples
+
+#Codecs
++ lame
++ ffmpeg
++ x265
++ gstreamer1.0-fluendo-mp3
+
+#Youtube
+#+ smtube
+#+ youtube-dlg

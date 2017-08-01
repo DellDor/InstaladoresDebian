@@ -1,6 +1,5 @@
 + hostname
 + net-tools
-+ ntp
 + iputils-ping
 + wpasupplicant
 + ftp

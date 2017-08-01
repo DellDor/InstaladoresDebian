@@ -1,11 +1,18 @@
-+ gparted
-+ baobab
-+ mc
 + fslint
-+ aria2
-+ juffed-plugins
-+ fdupes
-#+ vokoscreen
-+ localepurge
++ meld
+
 + bleachbit
++ baobab
++ fdupes
++ mc
+
++ gparted
++ juffed-plugins
++ localepurge
 + command-not-found
++ filezilla
+#+ udevil
+
++ aria2
++ uget
+

@@ -6,5 +6,12 @@
 + mesa-utils
 + gparted
 
+#Para detectar tarjetas gráficas, etc:
+- ddm
+
+#Para hora. Supercedido por systimectl
 - ntp
-- openntp
+- openntpd
+
+#Para máquinas con UEFI (GPT):
+#+ gdisk
