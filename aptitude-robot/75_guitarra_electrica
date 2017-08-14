@@ -1,9 +1,21 @@
 + rakarrack
 + qjackctl
 + guitarix
-+ gxtuner
+#+ gxtuner
 #~+ jack-tools
 
+#Alternativa a GuitarPro
+#+ tuxguitar
 
 + musescore
 + timgm6mb-soundfont
+
+#Para afinar cuando se tiene micrófono:
+- fmit
+#+ lingot
+
+#Solfeo
+#+ solfege
+
+#Metrónomo
+#+ gtklick

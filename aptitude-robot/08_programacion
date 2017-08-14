@@ -1,4 +1,9 @@
 + geany
-+ python3
-+ python
 + gedit-plugins
++ qterminal
+
++ python3
++ python3-pudb
+
++ python
++ python-pudb

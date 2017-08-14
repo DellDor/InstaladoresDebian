@@ -2,11 +2,32 @@
 + libreoffice-writer
 + libreoffice-impress
 + libreoffice-draw
-+ printer-driver-cups-pdf
 + libreoffice-pdfimport
 + libreoffice-l10n-es
++ libreoffice-help-es
+
++ printer-driver-cups-pdf
+
+#+ libreoffice-avmedia-backend-gstreamer
++ libreoffice-gtk3
+
++ libreoffice-math
+
++ libreoffice-style-galaxy
++ libreoffice-style-tango
+
+#+ libreoffice-base-drivers
+#+ libreoffice-java-common
++ python3-uno
+
 + mythes-es
 + hyphen-es
 + qpdfview
 
 + fonts-open-sans
++ fonts-opensymbol
+
++ thunderbird-l10n-es-es
++ lightning
+#+ xul-ext-nostalgy
++ xul-ext-ublock-origin

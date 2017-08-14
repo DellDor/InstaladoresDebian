@@ -1,14 +1,25 @@
 + hplip
-#+ cups
++ cups
+
+#Adicionales:
++ hplip-gui
++ python3-notify2
+
 
 #Opcional para ipstat
 + cups-client
 
-+ simple-scan
+#OCR:
 + tesseract-ocr
 + tesseract-ocr-spa
 
-+ lios
+#+ gocr
+#+ lios
 #+ ocrfeeder
 #+ yagf
+
+
+#Escanear:
+#+ simple-scan
 + gscan2pdf
++ xsane

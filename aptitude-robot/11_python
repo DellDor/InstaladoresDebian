@@ -1,3 +1,7 @@
 + python3-pip
 + python-pip
 + python3-setuptools #sino el pip3 da error
+
+#Para debbuging
++ python3-pudb
++ python-pudb

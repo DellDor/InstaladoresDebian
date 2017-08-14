@@ -6,6 +6,8 @@
 + fdupes
 + mc
 
++ pv
+
 + gparted
 + juffed-plugins
 + localepurge
@@ -15,4 +17,6 @@
 
 + aria2
 + uget
+
++ rpl
 
