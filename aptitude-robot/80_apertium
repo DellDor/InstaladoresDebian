@@ -1,0 +1,9 @@
+- apertium-dev
+- apertium-apy #Crea un servicio, así que por ahora, no
+
++ apertium-lex-tools
++ apertium-spa
++ apertium-spa-ita
++ apertium-en-es
++ apertium-fr-es
+

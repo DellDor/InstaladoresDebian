@@ -13,10 +13,14 @@
 + localepurge
 + command-not-found
 + filezilla
-#+ udevil
+- udevil
 
 + aria2
 + uget
 
 + rpl
+
+#Para que funcione notify-send
++ libnotify-bin
+
 

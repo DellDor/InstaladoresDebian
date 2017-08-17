@@ -1,4 +1,4 @@
-#+ wine
+- wine
 + wine-staging
 + winbind
 + wine-binfmt
@@ -9,10 +9,10 @@
 + fatattr
 + wine32
 + cabextract
-#+ gextractwinicons
-#+ icoutils
+- gextractwinicons
+#- icoutils #Es dependencia de otros
 + gnome-exe-thumbnailer
 + playonlinux
 + libgl1-mesa-dri:i386
 
-#~ + msitool
+- msitools

@@ -3,7 +3,8 @@
 - hexchat-perl
 - hexchat-plugins
 - hexchat-python3
-#~ -qbittorrent
+
++ qbittorrent
 
 + sparky-wine
 + sparky-locales

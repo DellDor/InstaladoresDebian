@@ -1,15 +1,23 @@
-#+ design-desktop-animation
+- design-desktop-animation
 
 #Grabador de escritorio
-#+ vokoscreen
+- vokoscreen
+
+#Rippeador a Mp3 (GUI GTK)
++ asunder
 
 #2d y 3d
 #+ librecad
 + blender
 + freecad
 
+- librecad
+
 #Editor de video
 + openshot-qt
+
++ shotcut
+- frei0r-plugins
 
 #Partituras
 + musescore
@@ -30,5 +38,5 @@
 + gstreamer1.0-fluendo-mp3
 
 #Youtube
-#+ smtube
-#+ youtube-dlg
+- smtube #instalar por pip3
++ youtube-dlg

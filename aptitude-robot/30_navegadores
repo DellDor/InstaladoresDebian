@@ -1,9 +1,9 @@
 + firefox-esr-l10n-es-es
 + firefox-esr
 + xul-ext-ublock-origin
-#+ chromium
-#+ chromium-l10n
-#+ flasplayer-chromium
+- chromium
+- chromium-l10n
+- flashplayer-chromium
 
 #Adicionales:
 + palemoon #Corroborar previemante si aplica condiciones para palemoon

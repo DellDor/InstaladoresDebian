@@ -22,3 +22,6 @@
 + lximage-qt-l10n
 
 + sparky-desktop-lxqt
+
+#+ murrine-themes #dependencia
++ gtk2-engines-murrine

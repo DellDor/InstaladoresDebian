@@ -8,7 +8,7 @@
 
 + printer-driver-cups-pdf
 
-#+ libreoffice-avmedia-backend-gstreamer
+- libreoffice-avmedia-backend-gstreamer
 + libreoffice-gtk3
 
 + libreoffice-math
@@ -16,8 +16,8 @@
 + libreoffice-style-galaxy
 + libreoffice-style-tango
 
-#+ libreoffice-base-drivers
-#+ libreoffice-java-common
+- libreoffice-base-drivers
++ libreoffice-java-common
 + python3-uno
 
 + mythes-es
@@ -29,5 +29,5 @@
 
 + thunderbird-l10n-es-es
 + lightning
-#+ xul-ext-nostalgy
++ xul-ext-nostalgy
 + xul-ext-ublock-origin

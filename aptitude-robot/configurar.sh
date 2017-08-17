@@ -4,6 +4,10 @@
 
 echo "--visual-preview" |sudo tee /etc/aptitude-robot/options.d/15-visible
 
+#Se pudieran marcar sólo con + o - los paquetes, de forma de tener realmente
+#lo que se quiere intalado y o ir llenando la máquina con basura. Última instancia =
+#Solo dejar en comentarios lo que hace conflicto o es dependencia de otro 
+#Además, mantiene nombres correctos en las listaas de paquetes
 
 #Añadido a alias:
 apr(){
