@@ -1,3 +1,4 @@
+#Libreoffice
 + libreoffice-calc
 + libreoffice-writer
 + libreoffice-impress
@@ -6,15 +7,12 @@
 + libreoffice-l10n-es
 + libreoffice-help-es
 
-+ printer-driver-cups-pdf
-
-- libreoffice-avmedia-backend-gstreamer
-+ libreoffice-gtk3
-
 + libreoffice-math
 
 + libreoffice-style-galaxy
 + libreoffice-style-tango
++ libreoffice-gtk3
+- libreoffice-avmedia-backend-gstreamer
 
 - libreoffice-base-drivers
 + libreoffice-java-common
@@ -22,6 +20,9 @@
 
 + mythes-es
 + hyphen-es
+
++ printer-driver-cups-pdf
+
 + qpdfview
 
 + fonts-open-sans

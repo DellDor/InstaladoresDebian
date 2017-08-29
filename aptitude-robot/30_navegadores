@@ -1,6 +1,10 @@
 + firefox-esr-l10n-es-es
 + firefox-esr
 + xul-ext-ublock-origin
+
++ aria2
++ uget
+
 - chromium
 - chromium-l10n
 - flashplayer-chromium

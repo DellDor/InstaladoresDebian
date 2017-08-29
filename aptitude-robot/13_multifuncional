@@ -9,8 +9,10 @@
 + cups-client
 
 #OCR:
-+ tesseract-ocr
++ tesseract-ocr #Automáticamente marca el inglés
 + tesseract-ocr-spa
+- tesseract-ocr-ita
+- tesseract-ocr-fra
 
 - gocr
 - lios
